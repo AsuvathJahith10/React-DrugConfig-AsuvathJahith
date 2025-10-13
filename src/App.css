@@ -1,0 +1,550 @@
+body {
+  margin: 0;
+  font-family: "Segoe UI", Arial, sans-serif;
+  background-color: #f5f7fa;
+}
+
+/* ===== HEADER ===== */
+.header-bar {
+  background-color: #003366;
+  color: white;
+  padding: 12px 24px;
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+/* Navigation Bar Styles */
+.navbar {
+  display: flex;
+  align-items: center;      /* vertical center for the navbar itself */
+  height: 50px;
+  min-height: 50px;
+  padding: 0;
+  margin: 0;
+  background: #2B3A44;
+}
+.Main{
+width: 98%;
+ margin-left:11px;
+
+}
+.container-fluid {
+    padding-right: 0px;
+    padding-left: 0px;
+    margin-right: auto;
+    margin-left: auto;
+    max-width: 1140px;
+}
+.Rx_HeaderBar {
+  display: flex;
+  align-items: center;      /* vertical center for all children */
+  height: 50px;
+  padding-left: 24px;       /* space from the left */
+  width: 100%;
+}
+
+.welcome-text {
+  color: #00EEAD !important;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  text-align: left;
+  display: flex;
+  align-items: center;      /* vertical center for the text itself */
+  height: 50px;
+}
+
+#ctl00_lblWelcome {
+  color: #00EEAD !important;
+  position: absolute;
+  left: 5px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+}
+
+.navbar-nav {
+  margin-top: 0;
+  position: relative;
+  right: 5px;
+  display: flex;
+  gap: 24px;
+  align-items: center;
+  height: 100%;
+  margin-left: auto;
+}
+
+.navbar-nav li {
+  list-style: none;
+}
+
+.navbar-nav a {
+  color: #fff;
+  text-decoration: none;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 15px;
+  padding: 8px 18px;
+  border-radius: 3px;
+  transition: background 0.2s, color 0.2s;
+  display: block;
+}
+
+.navbar-nav a:hover,
+.navbar-nav a:focus {
+  background: #13426C;
+  color: #00EEAD;
+}
+
+/* ===== TABS ===== */
+.tab-row {
+  display: flex;
+  background-color: #fff;
+  border-bottom: 2px solid #d9d9d9; /* mild line */
+}
+
+.tab {
+  padding: 10px 20px;
+  cursor: pointer;
+  font-weight: 500;
+  border-right: 1px solid #e6e6e6;
+  color: #000;
+  background-color: #fff;
+}
+
+.tab.active {
+  color: #003366;
+  font-weight: 600;
+  border-bottom: 3px solid #003366;
+}
+
+/* --- Search Panel Styles --- */
+.SearchPanel {
+    background-color: #f8f8ff;
+    border: 1px solid #d8d8d8;
+    padding: 18px 32px;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    min-width: 0;
+    overflow-x: auto;
+}
+
+.FilterRow {
+    display: flex;
+    align-items: center;
+    margin-bottom: 14px;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.FilterLabel {
+    font-family: Helvetica;
+    font-size: 12px !important;
+    color: Black;
+    font-weight: bold;
+    min-width: 100px;
+    text-align: right;
+}
+
+/* Light blue calendar icon for date inputs */
+.FilterInput[type="date"]::-webkit-calendar-picker-indicator {
+    filter: invert(62%) sepia(16%) saturate(748%) hue-rotate(181deg) brightness(98%) contrast(92%);
+    /* This gives a light blue tint similar to #acc7f7 */
+}
+.FilterInput[type="date"]::-ms-input-placeholder { color: #acc7f7; }
+.FilterInput[type="date"]::placeholder { color: #acc7f7; }
+
+.FilterInput, .DropDownList {
+    flex: 1 1 180px;
+    min-width: 120px;
+    max-width: 220px;
+    height: 27px !important;
+    padding-left: 4px !important;
+    margin-top: 4px !important;
+    box-sizing: border-box;
+    box-shadow: 0px 0px 3px 0px rgba(0,0,0,0.3);
+    border-top: solid 1px #A0A0A0 !important;
+    border-left: solid 1px #E3E8EF !important;
+    border-right: solid 1px #E3E8EF !important;
+    border-bottom: solid 1px #E3E8EF !important;
+    border-radius: 0px !important;
+    font-family: Helvetica;
+    font-size: 12px !important;
+    color: #000 !important;
+    background: #fff;
+    outline: 0;
+}
+
+.DropDownList {
+    background-color: white !important;
+    border: 1px solid #ccc;
+    border-radius: 0px;
+    min-height: 10px !important;
+    line-height: 1 !important;
+}
+
+/* ===== SEARCH PANEL ===== */
+.search-panel {
+  background-color: #ffffff;
+  padding: 16px 24px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  margin-top: 20px;
+}
+
+.search-panel {
+  margin-bottom: 4px;
+  font-weight: 600;
+  color: #000306;
+}
+
+.search-panel small {
+  color: #666;
+}
+
+.inline-field {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.inline-field label {
+  min-width: 120px;
+  font-weight: 500;
+  color: #333;
+}
+
+.inline-field input,
+.inline-field select {
+  flex: 1;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 6px 10px;
+}
+
+/* Search actions */
+.search-actions {
+  display: flex;
+  justify-content: flex-start; /* Aligns buttons to the left */
+  gap: 10px; /* Optional: adds space between buttons */
+}
+
+.btn-search {
+  background-color: #2b7fce;
+  color: #fff;
+  border: none;
+  padding: 8px 22px;
+  border-radius: 4px;
+  margin-right: 10px;
+  font-weight: 600;
+  transition: background 0.2s;
+}
+
+.btn-search:hover {
+  background-color: #3d4e7a;
+}
+
+.btn-clear {
+  background-color: #acc7f7;
+  color: #5468a0;
+  border: none;
+  padding: 8px 22px;
+  border-radius: 4px;
+  font-weight: 600;
+  transition: background 0.2s;
+}
+
+.btn-clear:hover {
+  background-color: #d0e2ff;
+  color: #3d4e7a;
+}
+
+/* ===== STATUS DISPLAY ABOVE GRID ===== */
+.status-display {
+  margin-top: 15px;
+  font-weight: 600;
+  color: #000000;
+}
+
+/* ===== GRID ===== */
+.data-grid {
+  margin-top: 15px;
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.data-grid table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.data-grid th {
+  background-color: #004080;
+  color: white;
+  padding: 10px;
+  text-align: left;
+  font-weight: 500;
+}
+
+.data-grid td {
+  padding: 8px 10px;
+  border-top: 1px solid #ddd;
+}
+
+.data-grid tr:nth-child(even) {
+  background-color: #f8f9fa;
+}
+
+.pin-icon {
+  color: #004080;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+/* General Button Style */
+.Button, .SearchButton, .ResetButton {
+    font-family: Arial;
+    font-size: 14px;
+    font-weight: bold;
+    text-align: center;
+    height: 25px;
+    min-width: 70px;
+    color: white;
+    background-image: linear-gradient(to bottom, #acc7f7, #5468a0);
+    border: 1px solid #5468a0;
+    border-radius: 0px;
+    cursor: pointer;
+    outline: 0;
+    box-sizing: border-box;
+    padding: 0 16px;
+    margin-right: 8px;
+    vertical-align: middle;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
+
+.ButtonRow {
+    display: flex;
+    align-items: center;
+    margin-top: 16px;
+    gap: 8px;
+}
+
+.FilterLabel {
+    font-family: Helvetica;
+    font-size: 12px !important;
+    color: Black;
+    font-weight: bold;
+    min-width: 100px;
+    text-align: left; /* Changed from right to left */
+}
+
+.PrimaryButton {
+    font-family: Arial;
+    font-size: 14px;
+    font-weight: bold;
+    text-align: center;
+    height: 25px;
+    min-width: 75px;
+    color: white;
+    background-image: linear-gradient(to bottom, #96d1ce, #4aaeb5);
+    border: 1px solid #4aaeb5;
+    border-radius: 0px;
+    cursor: pointer;
+    outline: 0;
+    box-sizing: border-box;
+    padding: 0 16px;
+    margin-right: 8px;
+    vertical-align: middle;
+}
+
+.Button:disabled,
+.SearchButton:disabled,
+.ResetButton:disabled,
+.PrimaryButton:disabled {
+    border: 1px solid #999999 !important;
+    color: #f2f2f2 !important;
+    background-image: linear-gradient(to bottom, #E7E7FF, #cccccc);
+    cursor: not-allowed;
+    font-weight: lighter;
+}
+
+.Button:hover,
+.SearchButton:hover,
+.ResetButton:hover,
+.PrimaryButton:hover {
+    filter: brightness(1.1);
+}
+
+.Button:focus,
+.SearchButton:focus,
+.ResetButton:focus,
+.PrimaryButton:focus {
+    outline: 2px solid #13426C;
+    outline-offset: 2px;
+}
+
+.landing-header {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  background-color: #fff;
+  width: 100vw;           /* Full viewport width */
+  min-width: 0;
+  min-height: 72px;
+  overflow: hidden;
+  padding: 0 32px;
+  box-sizing: border-box;
+  position: relative;
+}
+
+.landing-logo {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  margin-right: 16px;
+}
+
+.state-logo {
+  height: 72px;
+  border: 0;
+  display: block;
+}
+
+.landing-title {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  width: 326px;
+  margin-right: 16px;
+}
+
+.vue-logo {
+  height: 55px;
+  display: block;
+}
+
+.landing-caption {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  min-width: 120px;
+}
+
+.page-caption {
+  white-space: nowrap;
+  vertical-align: middle;
+  font-size: 16px;
+  font-weight: bold;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.landing-systemtime {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  min-width: 180px;
+  padding-right: 5px;
+}
+
+.system-time {
+  display: inline-block;
+  color: #000;
+  font-family: Verdana, Arial, sans-serif;
+  font-size: 16px;
+  padding-top: 22px;
+  white-space: nowrap;
+}
+
+#footer.TP_Footer {
+  width: 100%;
+  background: #f8f8ff;
+  border-top: 1px solid #d8d8d8;
+  margin-top: 0;
+  padding: 0;
+  box-shadow: 0 -2px 8px rgba(0,0,0,0.03);
+}
+
+#TP_FooterBG_VUE360 {
+  width: 100%;
+  background: #f8f8ff;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-end;
+  padding: 0;
+}
+
+.TP_FooterLinksContainer_VUE360 {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 1140px;
+  margin: 0 auto;
+  padding: 16px 32px 8px 32px;
+  box-sizing: border-box;
+}
+
+.footer-gainwell-logo-cell {
+  flex: 0 0 200px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.footer-gainwell-logo {
+  height: 32px;
+}
+
+.TP_FooterLinks {
+  flex: 1 1 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 14px;
+  color: #13426C;
+}
+
+.footer-empty-cell {
+  flex: 0 0 200px;
+}
+
+.TP_FooterLinks a {
+  color: #13426C;
+  text-decoration: none;
+  margin: 0 4px;
+  transition: color 0.2s;
+}
+
+.TP_FooterLinks a:hover {
+  color: #00EEAD;
+  text-decoration: underline;
+}
+
+.TP_Separator {
+  margin: 0 6px;
+  color: #b0b0b0;
+  font-weight: bold;
+}
+
+.VUE360FooterBar {
+  width: 100%;
+  max-width: 100%;
+  height: 40px;
+  object-fit: cover;
+  display: block;
+  margin: 0;
+  padding: 0;
+}
