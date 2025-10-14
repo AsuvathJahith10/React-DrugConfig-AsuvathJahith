@@ -2,6 +2,7 @@ import React, { useState, useEffect, useMemo } from "react";
 import SearchPanel from "./SearchBar";
 import DataGrid from "./GridComponent";
 import "../App.css";
+import ExcludedList from "./ExcludedList";
 
 const initialMockData = [
     { Name: "Acne Agents, Oral", EffectiveDate: "2023-01-26", TermDate: "2078-12-31", LastModified: "2025-06-10", Status: "Active" },
@@ -183,6 +184,12 @@ const PAEngineConfiguration = () => {
         >
           DataSets
         </div>
+        <div
+          className={`tab ${activeTab === "DrugList" ? "active" : ""}`}
+          onClick={() => setActiveTab("DrugList")}
+        >
+          Drug List
+        </div>
       </div>
 
       <div className="main-content mt-3 pb-3">
@@ -203,6 +210,9 @@ const PAEngineConfiguration = () => {
               ) : (
                   <p>No Data found</p>
               )}
+              {activeTab === "DrugList"  && 
+              <ExcludedList></ExcludedList>
+              }
         {/*<DataGrid data={filteredData} />*/}
       </div>
     </div>
