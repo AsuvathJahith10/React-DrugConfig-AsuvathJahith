@@ -108,7 +108,33 @@ const defaultFields = {
   ResultLimit: "",
 };
 
-const columns = ["Name", "EffectiveDate", "TermDate", "LastModified"];
+
+const columnAlignments = {
+    Name: 'left',
+    EffectiveDate: "right",
+    TermDate: "right",
+    LastModified: "right",
+    Status: "left"
+};
+
+const columnDisplayNames = {
+    Name: "Name",
+    EffectiveDate: "Effective Date",
+    TermDate: "Term Date",
+    LastModified: "Last Modified",
+    Status: "Status"
+};
+
+const columnWidths = {
+    Name: '46%',
+    EffectiveDate: '13%',
+    TermDate: '13%',
+    LastModified: '13%',
+    Status: '12%'
+  }
+
+
+const columns = ["Name", "EffectiveDate", "TermDate", "LastModified", "Status"];
 
 const PAEngineConfiguration = () => {
   const [activeTab, setActiveTab] = useState("RuleSets");
@@ -149,10 +175,19 @@ const PAEngineConfiguration = () => {
     };
 
     const cleanedData = useMemo(() => {
-        return filteredData.map(item => {
+        // Step 1: Sort filteredData by EffectiveDate descending
+        const sorted = [...filteredData].sort((a, b) => new Date(b.EffectiveDate) - new Date(a.EffectiveDate));
+
+        // Step 2: Format the dates
+        return sorted.map(item => {
             const newItem = {};
             columns.forEach(col => {
-                newItem[col] = item[col];
+                if (["EffectiveDate", "TermDate", "LastModified"].includes(col)) {
+                    const date = new Date(item[col]);
+                    newItem[col] = date.toLocaleDateString("en-US"); // Format to MM/DD/YYYY
+                } else {
+                    newItem[col] = item[col];
+                }
             });
             return newItem;
         });
@@ -199,7 +234,7 @@ const PAEngineConfiguration = () => {
         
       
               {filteredData && filteredData.length > 0 ? (
-                  <DataGrid title={selectedStatus} Orgdata={cleanedData} />
+                  <DataGrid title={selectedStatus} Orgdata={cleanedData} columnAlignments={columnAlignments} columnDisplayNames={columnDisplayNames} columnWidths={columnWidths} />
               ) : (
                   <p>No Data found</p>
               )}
