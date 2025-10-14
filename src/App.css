@@ -397,7 +397,6 @@ width: 98%;
   align-items: center;
   justify-content: flex-start;
   background-color: #fff;
-  width: 100vw;           /* Full viewport width */
   min-width: 0;
   min-height: 72px;
   overflow: hidden;
