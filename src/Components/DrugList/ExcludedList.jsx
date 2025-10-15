@@ -1,5 +1,5 @@
 import {useState} from "react";
-import DataGrid from "./GridComponent";
+import DataGrid from "./Datagrid";
 
 
 const mockSearchResults = [
@@ -24,11 +24,20 @@ const ExcludedList = () => {
     );
     setFilteredData(filtered);
   };
-   const handleKeyPress = (e) => {
-    if (e.key === "Enter") {
-      handleSearch();
-    }
-  };
+  const handleDelete = (record) => {
+  if (!record || !Array.isArray(filteredData)) return;
+
+  const idx = filteredData.findIndex(item => item.GCN === record.GCN);
+  alert(idx)
+  if (idx < 0) return;
+
+  const updated = [
+    ...filteredData.slice(0, idx),
+    ...filteredData.slice(idx + 1),
+  ];
+  console.log(updated)
+  setFilteredData(updated);
+};
     return (
         <>     
         <div className="mb-3 d-flex align-items-center justify-content-between" style={{ width: '100%' }}>
@@ -40,14 +49,14 @@ const ExcludedList = () => {
                 placeholder="Search..."
                 value={searchText}
                 onChange={(e) => setSearchText(e.target.value)}
-                onKeyPress={handleKeyPress}
+                
               />
             <button className="PrimaryButton ms-2" onClick={handleSearch}>
               Search
             </button>
           </div>
         </div>
-        <DataGrid title={"Drug"} Orgdata={filteredData} />
+        <DataGrid title={"Excluded"} Orgdata={filteredData} onDelete={handleDelete} />
         </>
     )
 }

@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo } from "react";
 import SearchPanel from "./SearchBar";
 import DataGrid from "./GridComponent";
 import "../App.css";
-import ExcludedList from "./ExcludedList";
+import ExcludedList from "./DrugList/ExcludedList";
 
 const initialMockData = [
     { Name: "Acne Agents, Oral", EffectiveDate: "2023-01-26", TermDate: "2078-12-31", LastModified: "2025-06-10", Status: "Active" },
