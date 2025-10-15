@@ -177,14 +177,14 @@ const PAEngineConfiguration = () => {
     const cleanedData = useMemo(() => {
         // Step 1: Sort filteredData by EffectiveDate descending
         const sorted = [...filteredData].sort((a, b) => new Date(b.EffectiveDate) - new Date(a.EffectiveDate));
-
+        const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
         // Step 2: Format the dates
         return sorted.map(item => {
             const newItem = {};
             columns.forEach(col => {
                 if (["EffectiveDate", "TermDate", "LastModified"].includes(col)) {
                     const date = new Date(item[col]);
-                    newItem[col] = date.toLocaleDateString("en-US"); // Format to MM/DD/YYYY
+                    newItem[col] = date.toLocaleDateString("en-US", options); // Format to MM/DD/YYYY
                 } else {
                     newItem[col] = item[col];
                 }
