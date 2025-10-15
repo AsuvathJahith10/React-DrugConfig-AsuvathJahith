@@ -33,20 +33,6 @@ const Datagrid = ({ Orgdata, title = "Active", columnAlignments = {}, columnDisp
     }, [Orgdata]);
 
 
-    //Get Data
-    //useEffect(() => {
-    //    //handleSort('effectivedate');
-    //    //getSortIcon('effectivedate');
-    //    //const handleClickOutside = (e) => {
-    //    //    if (popupRef.current && !popupRef.current.contains(e.target)) {
-    //    //        setFilterPopup(null);
-    //    //    }
-    //    //};
-    //    //document.addEventListener("mousedown", handleClickOutside);
-    //    //return () => document.removeEventListener("mousedown", handleClickOutside);
-    //}, []);
-
-
     // Filtering logic
     const filteredData = React.useMemo(() => data.filter((row) =>
         Object.keys(filters).every((key) =>
@@ -179,8 +165,8 @@ const Datagrid = ({ Orgdata, title = "Active", columnAlignments = {}, columnDisp
                                   
                                     <tr key={index}>
                                         <td style={{ width: `${fixedColumnWidthPx}px` }}>
-                                            <button className="edit-button">
-                                                <img src="/images/EditCheck.png" alt="button" className="icon-size" />
+                                            <button /*onClick={onClick}*/ style={{ border: "none", background: "none", padding: 0, margin: 'auto' }}>
+                                                <img src={`${process.env.PUBLIC_URL}/Images/EditCheck.png`} alt="button" style={{ width: '16px', height: '16px' }} />
                                             </button>
                                         </td>
                                         {headers.map((header) => (

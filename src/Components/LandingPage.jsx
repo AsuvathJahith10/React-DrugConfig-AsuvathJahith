@@ -10,14 +10,14 @@ const LandingPage = () => {
                 <div className="landing-header">
                     <div className="landing-logo">
                         <img
-                            src="/Images/TXSeal.png"
+                            src={`${process.env.PUBLIC_URL}/Images/TXSeal.png`}
                             alt="State Logo"
                             className="state-logo"
                         />
                     </div>
                     <div className="landing-title">
                         <img
-                            src="/Images/Vue360Rx.png"
+                            src={`${process.env.PUBLIC_URL}/Images/Vue360Rx.png`}
                             alt="VUE 360 Rx"
                             className="vue-logo"
                         />
@@ -51,7 +51,7 @@ const LandingPage = () => {
                         <div className="TP_FooterLinksContainer_VUE360">
                             <div className="footer-gainwell-logo-cell">
                                 <img
-                                    src="/Images/gainwell-logo.jpg"
+                                    src={`${process.env.PUBLIC_URL}/Images/gainwell-logo.jpg`}
                                     alt="Gainwell"
                                     className="footer-gainwell-logo"
                                 />
@@ -68,7 +68,7 @@ const LandingPage = () => {
                             <div className="footer-empty-cell" />
                         </div>
                         <img
-                            src="/Images/Footer-gainwell.png"
+                            src={`${process.env.PUBLIC_URL}/Images/Footer-gainwell.png`}
                             className="VUE360FooterBar"
                             alt="VUE360 Footer Bar"
                         />

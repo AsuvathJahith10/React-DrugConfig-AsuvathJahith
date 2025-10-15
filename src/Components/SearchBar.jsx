@@ -13,31 +13,10 @@ const SearchBar = ({
     <div className="SearchPanel">
       <div
         className="d-flex align-items-center mb-2"
-        style={{ cursor: "pointer", justifyContent: "space-between" }}
-        onClick={() => setCollapsed((prev) => !prev)}
+       
       >
         <h5 className="mb-0">Search By</h5>
-        <span
-          style={{
-            fontSize: "1.5rem",
-            marginLeft: "auto",
-            display: "flex",
-            alignItems: "center",
-            transition: "transform 0.2s",
-            transform: collapsed ? "rotate(0deg)" : "rotate(180deg)",
-          }}
-        >
-          {/* Chevron Down SVG */}
-          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-            <path
-              d="M5 8L10 13L15 8"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
-        </span>
+       
       </div>
       {!collapsed && (
         <>
