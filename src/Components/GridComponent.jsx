@@ -59,7 +59,7 @@ const Datagrid = ({ Orgdata, title = "Active", columnAlignments = {}, columnDisp
         if (aValue > bValue) return sortConfig.direction === "asc" ? 1 : -1;
         return 0;
     })
-    , [filteredData, sortConfig]);
+        , [filteredData, sortConfig]);
 
     // Handle filter change
     const handleFilterChange = (e, column) => {
@@ -75,7 +75,7 @@ const Datagrid = ({ Orgdata, title = "Active", columnAlignments = {}, columnDisp
             direction = 'desc';
         }
 
-       
+
         //setData(sorted);
         setSortConfig({ key, direction });
     };
@@ -148,12 +148,12 @@ const Datagrid = ({ Orgdata, title = "Active", columnAlignments = {}, columnDisp
                                     backgroundColor: '#c8dbfb', width: `${fixedColumnWidthPx}px`, textAlign: "center"  // <-- add this line 
                                 }}></th>
                                 {headers.map((key) => (
-                                    <th key={key} className="table-th" style={{ textAlign: columnAlignments[key] || 'left', width: columnWidths[key]}}>
+                                    <th key={key} className="table-th" style={{ textAlign: columnAlignments[key] || 'left', width: columnWidths[key] }}>
                                         <div className="align-items-center" onClick={() => handleSort(key)}>
                                             <span className="text-capitalize">{columnDisplayNames[key] || key}</span>
                                             <span className="btn ms-1 sort-icon">{getSortIcon(key)}</span>
                                         </div>
-                                       
+
                                     </th>
                                 ))}
 
@@ -162,7 +162,7 @@ const Datagrid = ({ Orgdata, title = "Active", columnAlignments = {}, columnDisp
                         <tbody>
                             {currentRows.length > 0 ? (
                                 currentRows.map((item, index) => (
-                                  
+
                                     <tr key={index}>
                                         <td style={{ width: `${fixedColumnWidthPx}px` }}>
                                             <button /*onClick={onClick}*/ style={{ border: "none", background: "none", padding: 0, margin: 'auto' }}>
@@ -170,13 +170,13 @@ const Datagrid = ({ Orgdata, title = "Active", columnAlignments = {}, columnDisp
                                             </button>
                                         </td>
                                         {headers.map((header) => (
-                                            <td key={header} style={{ textAlign: columnAlignments[header] || 'left', width: columnWidths[header]}}>{item[header]}</td>
+                                            <td key={header} style={{ textAlign: columnAlignments[header] || 'left', width: columnWidths[header] }}>{item[header]}</td>
                                         ))}
                                     </tr>
                                 ))
                             ) : (
                                 <tr>
-                                        <td colSpan={headers.length + 1} className="text-center">Loading data...</td>
+                                    <td colSpan={headers.length + 1} className="text-center">Loading data...</td>
                                 </tr>
                             )}
 
@@ -255,7 +255,7 @@ const Datagrid = ({ Orgdata, title = "Active", columnAlignments = {}, columnDisp
                             >
                                 <i className="bi bi-skip-end-fill"></i>
                             </button>
-                            
+
 
                         </div>
                     </nav>

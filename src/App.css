@@ -55,7 +55,7 @@ width: 98%;
   height: 50px;
 }
 
-#ctl00_lblWelcome {
+#lblWelcome {
   color: #00EEAD !important;
   position: absolute;
   left: 5px;
@@ -397,6 +397,7 @@ width: 98%;
   align-items: center;
   justify-content: flex-start;
   background-color: #fff;
+  width: auto;           /* Full viewport width */
   min-width: 0;
   min-height: 72px;
   overflow: hidden;
