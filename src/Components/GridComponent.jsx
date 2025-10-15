@@ -1,10 +1,11 @@
 import React, { useEffect, useState, useRef } from 'react';
+import '../Style/GridComponent.css';
 
 
-const Datagrid = ({ Orgdata, title = "Active" }) => {
+const Datagrid = ({ Orgdata, title = "Active", columnAlignments = {}, columnDisplayNames = {}, columnWidths = {} }) => {
 
     //Actual Data
-    const [data, setData] = useState(Orgdata);
+    const [data, setData] = useState([]);
 
     //Sorting
     const [sortConfig, setSortConfig] = useState({ key: null, direction: 'asc' });
@@ -12,49 +13,53 @@ const Datagrid = ({ Orgdata, title = "Active" }) => {
     //Filter
     const [filterPopup, setFilterPopup] = useState(null);
     const popupRef = useRef(null);
-    const [filters, setFilters] = useState({ name: '', effectivedate: '', termdate: '', lastmodified: '' });
+    const [filters, setFilters] = useState({});
 
     //Pagging
     const [rowsPerPage] = useState(10);
     const [currentPage, setCurrentPage] = useState(1);
 
     useEffect(() => {
-        setData(Orgdata);
-        setCurrentPage(1)
+        if (Orgdata && Orgdata.length > 0) {
+            setData(Orgdata);
+            setCurrentPage(1);
+
+            const initialFilters = Object.keys(Orgdata[0]).reduce((acc, key) => {
+                acc[key] = '';
+                return acc;
+            }, {});
+            setFilters(initialFilters);
+        }
     }, [Orgdata]);
 
 
-    //Get Data
-    useEffect(() => {
-        console.log(Orgdata);
-        console.log("data");
-        handleSort('name');
-        const handleClickOutside = (e) => {
-            if (popupRef.current && !popupRef.current.contains(e.target)) {
-                setFilterPopup(null);
-            }
-        };
-        document.addEventListener("mousedown", handleClickOutside);
-        return () => document.removeEventListener("mousedown", handleClickOutside);
-    }, []);
-
-
     // Filtering logic
-    const filteredData = data.filter((row) =>
+    const filteredData = React.useMemo(() => data.filter((row) =>
         Object.keys(filters).every((key) =>
-            String(row[key]).toLowerCase().includes(filters[key].toLowerCase())
+            String(row[key] || '').toLowerCase().includes(filters[key].toLowerCase())
         )
-    );
+    ), [data, filters]);
 
     // Sorting logic
-    const sortedData = [...filteredData].sort((a, b) => {
+    const sortedData = React.useMemo(() => [...filteredData].sort((a, b) => {
         if (!sortConfig.key) return 0;
-        const aValue = a[sortConfig.key];
-        const bValue = b[sortConfig.key];
+        let aValue = a[sortConfig.key];
+        let bValue = b[sortConfig.key];
+
+        // Check if the column is a date field
+        const isDateField = ['effectivedate', 'termdate', 'lastmodified'].includes(sortConfig.key);
+        if (isDateField) {
+            aValue = Date.parse(aValue);
+            bValue = Date.parse(bValue);
+
+            console.log("Sorting:", sortConfig.key, aValue, bValue);
+        }
+
         if (aValue < bValue) return sortConfig.direction === "asc" ? -1 : 1;
         if (aValue > bValue) return sortConfig.direction === "asc" ? 1 : -1;
         return 0;
-    });
+    })
+        , [filteredData, sortConfig]);
 
     // Handle filter change
     const handleFilterChange = (e, column) => {
@@ -70,13 +75,8 @@ const Datagrid = ({ Orgdata, title = "Active" }) => {
             direction = 'desc';
         }
 
-        const sorted = [...data].sort((a, b) => {
-            if (a[key] < b[key]) return direction === 'asc' ? -1 : 1;
-            if (a[key] > b[key]) return direction === 'asc' ? 1 : -1;
-            return 0;
-        });
 
-        setData(sorted);
+        //setData(sorted);
         setSortConfig({ key, direction });
     };
 
@@ -105,6 +105,7 @@ const Datagrid = ({ Orgdata, title = "Active" }) => {
     //const totalPages = Math.ceil(data.length / rowsPerPage);
     const headers = data && data.length > 0 ? Object.keys(data[0]) : [];
     const pageRefs = useRef([]);
+
     useEffect(() => {
         const currentRef = pageRefs.current[currentPage - 1];
         if (currentRef) {
@@ -115,60 +116,44 @@ const Datagrid = ({ Orgdata, title = "Active" }) => {
             });
         }
     }, [currentPage]);
+    // Fixed width for the first column (edit button)
+    const fixedColumnWidthPx = 35;
+
+    // Count of other columns (headers length)
+    const numberOfColumns = headers.length;
+    const defaultColumnWidth = `calc((100% - ${fixedColumnWidthPx}px) / ${numberOfColumns})`;
 
     return (
-        <div className="container mt-3" style={{ paddingLeft: "0px", paddingRight: "0px" }}>
-            <style>{`
-                .page-item.active .page-link {
-                  background-color: #c8dbfb !important;
-                  border-color: #c8dbfb !important;
-                  color: #000 !important;
-                }
-                .page-link {
-                    color: black !important;
-                }
-                .table-rounded {
-                    border-radius: 4px; 
-                }
-                .pagination-nav {
-                   //justify-content: start;
-                   /* fixed width for nav */
-                }
-               .pagination-scrollbar {
-                  overflow-x: auto;
-                  -ms-overflow-style: none;  /* IE and Edge */
-                  scrollbar-width: none;     /* Firefox */
-                }
-
-                .pagination-scrollbar::-webkit-scrollbar {
-                  display: none;             /* Chrome, Safari, Opera */
-                }
-
-          `}</style>
+        <div className="container mt-3 container-no-padding" >
             <div className="row justify-content-center" >
                 <div className="col-auto me-auto" >
                     <h6 className="mb-0" >{title} RuleSets</h6>
                 </div>
                 <div className="col-auto">
-                    <label style={{ fontSize: '12px' }}>{sortedData.length} Records</label>
+                    <label className="label-small">{sortedData.length} Records</label>
                 </div>
             </div>
-            <div style={{ border: "1px solid #ccc", borderRadius: "4px" }}>
-                <div className="table-responsive" style={{ minHeight: "395px", overflowY: "auto" }}>
-                    <table className="table table-striped table-bordered table-hover table-rounded mb-0" cellPadding="10"
-                        style={{ borderCollapse: "collapse", width: "100%", tableLayout: "fixed", fontSize: '12px', textAlign: "left" }}>
-                        <thead style={{ backgroundColor: '#c8dbfb', position: "sticky", top: 0, zIndex: 2 }}>
+            <div className="table-container">
+                <div className="table-responsive table-wrapper" >
+                    <table className="table table-striped table-bordered table-hover table-rounded mb-0 custom-table" cellPadding="10">
+                        <colgroup>
+                            <col style={{ width: `${fixedColumnWidthPx}px` }} />
+                            {headers.map((key) => (
+                                <col key={key} style={{ width: columnWidths[key] || defaultColumnWidth }} />
+                            ))}
+                        </colgroup>
+                        <thead className="table-header">
                             <tr>
-                                <th style={{ backgroundColor: '#c8dbfb', width: "35px", textAlign: "center" }}></th>
+                                <th style={{
+                                    backgroundColor: '#c8dbfb', width: `${fixedColumnWidthPx}px`, textAlign: "center"  // <-- add this line 
+                                }}></th>
                                 {headers.map((key) => (
-                                    <th key={key} style={{ cursor: 'pointer', whiteSpace: 'nowrap', position: 'relative', backgroundColor: '#c8dbfb', padding: '2px', paddingLeft: '0.5rem' }}>
-                                        <div className="d-flex align-items-center" onClick={() => handleSort(key)}>
-                                            <span className="text-capitalize">{key}</span>
-                                            <span className="btn ms-1" style={{ padding: '1px', paddingTop: '2px', paddingBottom: '2px' }} >{getSortIcon(key)}</span>
-                                            <span className="ms-5"></span>
-                                            <span className="ms-5"></span>
+                                    <th key={key} className="table-th" style={{ textAlign: columnAlignments[key] || 'left', width: columnWidths[key] }}>
+                                        <div className="align-items-center" onClick={() => handleSort(key)}>
+                                            <span className="text-capitalize">{columnDisplayNames[key] || key}</span>
+                                            <span className="btn ms-1 sort-icon">{getSortIcon(key)}</span>
                                         </div>
-                                       
+
                                     </th>
                                 ))}
 
@@ -177,21 +162,21 @@ const Datagrid = ({ Orgdata, title = "Active" }) => {
                         <tbody>
                             {currentRows.length > 0 ? (
                                 currentRows.map((item, index) => (
-                                  
-                                    <tr key={index} >
-                                        <td style={{ width: '10px' }}>
+
+                                    <tr key={index}>
+                                        <td style={{ width: `${fixedColumnWidthPx}px` }}>
                                             <button /*onClick={onClick}*/ style={{ border: "none", background: "none", padding: 0, margin: 'auto' }}>
-                                                <img src="/images/EditCheck.png" alt="button" style={{ width: '16px', height: '16px' }} />
+                                                <img src={`${process.env.PUBLIC_URL}/Images/EditCheck.png`} alt="button" style={{ width: '16px', height: '16px' }} />
                                             </button>
                                         </td>
                                         {headers.map((header) => (
-                                            <td key={header}>{item[header]}</td>
+                                            <td key={header} style={{ textAlign: columnAlignments[header] || 'left', width: columnWidths[header] }}>{item[header]}</td>
                                         ))}
                                     </tr>
                                 ))
                             ) : (
                                 <tr>
-                                    <td colSpan="4" className="text-center">Loading data...</td>
+                                    <td colSpan={headers.length + 1} className="text-center">Loading data...</td>
                                 </tr>
                             )}
 
@@ -200,34 +185,22 @@ const Datagrid = ({ Orgdata, title = "Active" }) => {
                 </div>
                 <div>
                     <nav aria-label="Page navigation">
-                        <div
-                            style={{
-                                display: 'flex',
-                                alignItems: 'center',
-                                //width: '220px',      // slightly wider for better spacing
-                                overflow: 'hidden',
-                                margin: '5px',
-                            }}
-                        >
+                        <div className="pagination-container">
                             {/* First */}
                             <button
-                                className="btn btn-sm btn-light"
+                                className="btn btn-sm btn-light page-button"
                                 onClick={() => handlePageChange(1)}
                                 disabled={currentPage === 1}
-                                title="First Page"
-                                style={{ minWidth: '32px' }}
-                            >
+                                title="First Page">
                                 <i className="bi bi-skip-start-fill"></i>
                             </button>
 
                             {/* Previous */}
                             <button
-                                className="btn btn-sm btn-light"
+                                className="btn btn-sm btn-light page-button"
                                 onClick={() => handlePageChange(currentPage - 1)}
                                 disabled={currentPage === 1}
-                                title="Previous Page"
-                                style={{ minWidth: '32px' }}
-                            >
+                                title="Previous Page">
                                 <i className="bi bi-caret-left-fill"></i>
                             </button>
 
@@ -282,7 +255,7 @@ const Datagrid = ({ Orgdata, title = "Active" }) => {
                             >
                                 <i className="bi bi-skip-end-fill"></i>
                             </button>
-                            
+
 
                         </div>
                     </nav>
