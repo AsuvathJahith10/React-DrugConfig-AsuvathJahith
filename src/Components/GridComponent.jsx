@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
+import '../Style/GridComponent.css';
 
 
 const Datagrid = ({ Orgdata, title = "Active", columnAlignments = {}, columnDisplayNames = {}, columnWidths = {} }) => {
@@ -137,62 +138,34 @@ const Datagrid = ({ Orgdata, title = "Active", columnAlignments = {}, columnDisp
     const defaultColumnWidth = `calc((100% - ${fixedColumnWidthPx}px) / ${numberOfColumns})`;
 
     return (
-        <div className="container mt-3" style={{ paddingLeft: "0px", paddingRight: "0px" }}>
-            <style>{`
-                .page-item.active .page-link {
-                  background-color: #c8dbfb !important;
-                  border-color: #c8dbfb !important;
-                  color: #000 !important;
-                }
-                .page-link {
-                    color: black !important;
-                }
-                .table-rounded {
-                    border-radius: 4px; 
-                }
-                .pagination-nav {
-                   //justify-content: start;
-                   /* fixed width for nav */
-                }
-               .pagination-scrollbar {
-                  overflow-x: auto;
-                  -ms-overflow-style: none;  /* IE and Edge */
-                  scrollbar-width: none;     /* Firefox */
-                }
-
-                .pagination-scrollbar::-webkit-scrollbar {
-                  display: none;             /* Chrome, Safari, Opera */
-                }
-
-          `}</style>
+        <div className="container mt-3 container-no-padding" >
             <div className="row justify-content-center" >
                 <div className="col-auto me-auto" >
                     <h6 className="mb-0" >{title} RuleSets</h6>
                 </div>
                 <div className="col-auto">
-                    <label style={{ fontSize: '12px' }}>{sortedData.length} Records</label>
+                    <label className="label-small">{sortedData.length} Records</label>
                 </div>
             </div>
-            <div style={{ border: "1px solid #ccc", borderRadius: "4px" }}>
-                <div className="table-responsive" style={{ minHeight: "395px", overflowY: "auto" }}>
-                    <table className="table table-striped table-bordered table-hover table-rounded mb-0" cellPadding="10"
-                        style={{ borderCollapse: "collapse", width: "100%", tableLayout: "fixed", fontSize: '12px' }}>
+            <div className="table-container">
+                <div className="table-responsive table-wrapper" >
+                    <table className="table table-striped table-bordered table-hover table-rounded mb-0 custom-table" cellPadding="10">
                         <colgroup>
                             <col style={{ width: `${fixedColumnWidthPx}px` }} />
                             {headers.map((key) => (
                                 <col key={key} style={{ width: columnWidths[key] || defaultColumnWidth }} />
                             ))}
                         </colgroup>
-                        <thead style={{ backgroundColor: '#c8dbfb', position: "sticky", top: 0, zIndex: 2 }}>
+                        <thead className="table-header">
                             <tr>
                                 <th style={{
                                     backgroundColor: '#c8dbfb', width: `${fixedColumnWidthPx}px`, textAlign: "center"  // <-- add this line 
                                 }}></th>
                                 {headers.map((key) => (
-                                    <th key={key} style={{ cursor: 'pointer', whiteSpace: 'nowrap', position: 'relative', backgroundColor: '#c8dbfb', padding: '2px', paddingLeft: '0.5rem', textAlign: columnAlignments[key] || 'left', width: columnWidths[key]}}>
+                                    <th key={key} className="table-th" style={{ textAlign: columnAlignments[key] || 'left', width: columnWidths[key]}}>
                                         <div className="align-items-center" onClick={() => handleSort(key)}>
                                             <span className="text-capitalize">{columnDisplayNames[key] || key}</span>
-                                            <span className="btn ms-1" style={{ padding: '1px 0', marginBottom: '3.5px' }} >{getSortIcon(key)}</span>
+                                            <span className="btn ms-1 sort-icon">{getSortIcon(key)}</span>
                                         </div>
                                        
                                     </th>
@@ -206,8 +179,8 @@ const Datagrid = ({ Orgdata, title = "Active", columnAlignments = {}, columnDisp
                                   
                                     <tr key={index}>
                                         <td style={{ width: `${fixedColumnWidthPx}px` }}>
-                                            <button /*onClick={onClick}*/ style={{ border: "none", background: "none", padding: 0, margin: 'auto' }}>
-                                                <img src="/images/EditCheck.png" alt="button" style={{ width: '16px', height: '16px' }} />
+                                            <button className="edit-button">
+                                                <img src="/images/EditCheck.png" alt="button" className="icon-size" />
                                             </button>
                                         </td>
                                         {headers.map((header) => (
@@ -226,34 +199,22 @@ const Datagrid = ({ Orgdata, title = "Active", columnAlignments = {}, columnDisp
                 </div>
                 <div>
                     <nav aria-label="Page navigation">
-                        <div
-                            style={{
-                                display: 'flex',
-                                alignItems: 'center',
-                                //width: '220px',      // slightly wider for better spacing
-                                overflow: 'hidden',
-                                margin: '5px',
-                            }}
-                        >
+                        <div className="pagination-container">
                             {/* First */}
                             <button
-                                className="btn btn-sm btn-light"
+                                className="btn btn-sm btn-light page-button"
                                 onClick={() => handlePageChange(1)}
                                 disabled={currentPage === 1}
-                                title="First Page"
-                                style={{ minWidth: '32px' }}
-                            >
+                                title="First Page">
                                 <i className="bi bi-skip-start-fill"></i>
                             </button>
 
                             {/* Previous */}
                             <button
-                                className="btn btn-sm btn-light"
+                                className="btn btn-sm btn-light page-button"
                                 onClick={() => handlePageChange(currentPage - 1)}
                                 disabled={currentPage === 1}
-                                title="Previous Page"
-                                style={{ minWidth: '32px' }}
-                            >
+                                title="Previous Page">
                                 <i className="bi bi-caret-left-fill"></i>
                             </button>
 
