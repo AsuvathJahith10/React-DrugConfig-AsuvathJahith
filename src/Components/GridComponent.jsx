@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import '../Style/GridComponent.css';
 
 
-const Datagrid = ({ Orgdata, title = "Active", columnAlignments = {}, columnDisplayNames = {}, columnWidths = {} }) => {
+const Datagrid = ({ Orgdata, title = "Active", columnAlignments = {}, columnDisplayNames = {}, columnWidths = {}, onDelete = null, showDelete = false, showEditButtonColumn = false }) => {
 
     //Actual Data
     const [data, setData] = useState([]);
@@ -30,6 +30,8 @@ const Datagrid = ({ Orgdata, title = "Active", columnAlignments = {}, columnDisp
             }, {});
             setFilters(initialFilters);
         }
+        else
+            setData(Orgdata);
     }, [Orgdata]);
 
 
@@ -127,7 +129,7 @@ const Datagrid = ({ Orgdata, title = "Active", columnAlignments = {}, columnDisp
         <div className="container mt-3 container-no-padding" >
             <div className="row justify-content-center" >
                 <div className="col-auto me-auto" >
-                    <h6 className="mb-0" >{title} RuleSets</h6>
+                    <h6 className="mb-0" >{title}</h6>
                 </div>
                 <div className="col-auto">
                     <label className="label-small">{sortedData.length} Records</label>
@@ -137,16 +139,19 @@ const Datagrid = ({ Orgdata, title = "Active", columnAlignments = {}, columnDisp
                 <div className="table-responsive table-wrapper" >
                     <table className="table table-striped table-bordered table-hover table-rounded mb-0 custom-table" cellPadding="10">
                         <colgroup>
-                            <col style={{ width: `${fixedColumnWidthPx}px` }} />
+                            {showEditButtonColumn && (
+                                <col style={{ width: `${fixedColumnWidthPx}px` }} />
+                            )}
                             {headers.map((key) => (
                                 <col key={key} style={{ width: columnWidths[key] || defaultColumnWidth }} />
                             ))}
                         </colgroup>
                         <thead className="table-header">
                             <tr>
-                                <th style={{
-                                    backgroundColor: '#c8dbfb', width: `${fixedColumnWidthPx}px`, textAlign: "center"  // <-- add this line 
-                                }}></th>
+                                {showEditButtonColumn===true && (
+                                    <th style={{
+                                        backgroundColor: '#c8dbfb', width: `${fixedColumnWidthPx}px`, textAlign: "center"  // <-- add this line 
+                                    }}></th>)}
                                 {headers.map((key) => (
                                     <th key={key} className="table-th" style={{ textAlign: columnAlignments[key] || 'left', width: columnWidths[key] }}>
                                         <div className="align-items-center" onClick={() => handleSort(key)}>
@@ -156,7 +161,14 @@ const Datagrid = ({ Orgdata, title = "Active", columnAlignments = {}, columnDisp
 
                                     </th>
                                 ))}
-
+                                {showDelete === true && (
+                                    <th style={{
+                                        backgroundColor: '#c8dbfb',
+                                        width: `${fixedColumnWidthPx}px`,
+                                        textAlign: "center"
+                                    }}>
+                                    </th>
+                                )}
                             </tr>
                         </thead>
                         <tbody>
@@ -164,14 +176,32 @@ const Datagrid = ({ Orgdata, title = "Active", columnAlignments = {}, columnDisp
                                 currentRows.map((item, index) => (
 
                                     <tr key={index}>
-                                        <td style={{ width: `${fixedColumnWidthPx}px` }}>
-                                            <button /*onClick={onClick}*/ style={{ border: "none", background: "none", padding: 0, margin: 'auto' }}>
-                                                <img src={`${process.env.PUBLIC_URL}/Images/EditCheck.png`} alt="button" style={{ width: '16px', height: '16px' }} />
-                                            </button>
-                                        </td>
+                                       {showEditButtonColumn && (
+                                            <td style={{ width: `${fixedColumnWidthPx}px` }}>
+                                                <button /*onClick={onClick}*/ style={{ border: "none", background: "none", padding: 0, margin: 'auto' }}>
+                                                    <img src={`${process.env.PUBLIC_URL}/Images/EditCheck.png`} alt="button" style={{ width: '16px', height: '16px' }} />
+                                                </button>
+                                            </td>)}
                                         {headers.map((header) => (
                                             <td key={header} style={{ textAlign: columnAlignments[header] || 'left', width: columnWidths[header] }}>{item[header]}</td>
                                         ))}
+                                        {onDelete && (
+                                            <td style={{ width: `${fixedColumnWidthPx}px`, textAlign: 'center' }}>
+                                                <button
+                                                    onClick={() => onDelete(item)}
+                                                    style={{
+                                                        border: 'none',
+                                                        background: 'none',
+                                                        padding: '0',
+                                                        cursor: 'pointer',
+                                                        color: 'red',
+                                                    }}
+                                                    title="Delete"
+                                                >
+                                                    <i className="bi bi-trash"></i>
+                                                </button>
+                                            </td>
+                                        )}
                                     </tr>
                                 ))
                             ) : (

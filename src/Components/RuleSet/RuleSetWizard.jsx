@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import RulesSetDetails from './RuleSetDetails';
-
+import DrugList from './DrugList';
 const StepCircle = ({ isActive, isCompleted, isLast }) => (
     <>
         <div
@@ -76,7 +76,7 @@ const RuleSetWizard = () => {
 
     // Define step components inline
     //const Step1 = () => <div>Content for Step 1</div>;
-    const Step2 = () => <div>Content for Step 2</div>;
+    // const Step2 = () => <div>Content for Step 2</div>;
     const Step3 = () => <div>Content for Step 3</div>;
     const Step4 = () => <div>Content for Step 4</div>;
     const Step5 = () => <div>Content for Step 5</div>;
@@ -86,7 +86,7 @@ const RuleSetWizard = () => {
             case 1:
                 return <RulesSetDetails />;
             case 2:
-                return <Step2 />;
+                return <DrugList />;
             case 3:
                 return <Step3 />;
             case 4:

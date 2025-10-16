@@ -297,7 +297,7 @@ const RuleSetMaster = () => {
                 }
                 {activeComponent === 'RuleSetSearch' && filteredData && filteredData.length > 0 ? (
                    /* <GridComponent title={selectedStatus} Orgdata={cleanedData} />*/
-                    <GridComponent title={selectedStatus} Orgdata={cleanedData} columnAlignments={columnAlignments} columnDisplayNames={columnDisplayNames} columnWidths={columnWidths} />
+                    <GridComponent title={selectedStatus + " RuleSets"} Orgdata={cleanedData} columnAlignments={columnAlignments} columnDisplayNames={columnDisplayNames} columnWidths={columnWidths} showEditButtonColumn={true}  />
                 ) : activeComponent === 'RuleSetSearch' ? (
                     <p>No Data found</p>
                 ) : (<p></p>)}
