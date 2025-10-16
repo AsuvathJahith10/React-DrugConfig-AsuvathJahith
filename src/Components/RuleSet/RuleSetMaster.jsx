@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from "react";
-import RuleSetSearch from '../RuleSet/RuleSetSearch';
+import SearchBar from '../SearchBar';
 import RuleSetWizard from '../RuleSet/RuleSetWizard';
 
 
@@ -288,7 +288,7 @@ const RuleSetMaster = () => {
             </div>
             <div className="main-content mt-3 pb-3">
 
-                {activeComponent === 'RuleSetSearch' && <RuleSetSearch
+                {activeComponent === 'RuleSetSearch' && <SearchBar
                     searchFields={searchFields}
                     onFieldChange={handleFieldChange}
                     onSearch={handleSearch}

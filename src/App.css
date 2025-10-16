@@ -4,7 +4,6 @@ body {
   background-color: #f5f7fa;
 }
 
-/* ===== HEADER ===== */
 .header-bar {
   background-color: #003366;
   color: white;
@@ -13,10 +12,9 @@ body {
   font-weight: 600;
 }
 
-/* Navigation Bar Styles */
 .navbar {
   display: flex;
-  align-items: center;      /* vertical center for the navbar itself */
+  align-items: center;     
   height: 50px;
   min-height: 50px;
   padding: 0;
@@ -37,9 +35,9 @@ width: 98%;
 }
 .Rx_HeaderBar {
   display: flex;
-  align-items: center;      /* vertical center for all children */
+  align-items: center;      
   height: 50px;
-  padding-left: 24px;       /* space from the left */
+  padding-left: 24px;    
   width: 100%;
 }
 
@@ -51,7 +49,7 @@ width: 98%;
   letter-spacing: 0.5px;
   text-align: left;
   display: flex;
-  align-items: center;      /* vertical center for the text itself */
+  align-items: center;     
   height: 50px;
 }
 
@@ -97,11 +95,10 @@ width: 98%;
   color: #00EEAD;
 }
 
-/* ===== TABS ===== */
 .tab-row {
   display: flex;
   background-color: #fff;
-  border-bottom: 2px solid #d9d9d9; /* mild line */
+  border-bottom: 2px solid #d9d9d9; 
 }
 
 .tab {
@@ -119,7 +116,6 @@ width: 98%;
   border-bottom: 3px solid #003366;
 }
 
-/* --- Search Panel Styles --- */
 .SearchPanel {
     background-color: #f8f8ff;
     border: 1px solid #d8d8d8;
@@ -141,19 +137,8 @@ width: 98%;
     gap: 10px;
 }
 
-.FilterLabel {
-    font-family: Helvetica;
-    font-size: 12px !important;
-    color: Black;
-    font-weight: bold;
-    min-width: 100px;
-    text-align: right;
-}
-
-/* Light blue calendar icon for date inputs */
 .FilterInput[type="date"]::-webkit-calendar-picker-indicator {
     filter: invert(62%) sepia(16%) saturate(748%) hue-rotate(181deg) brightness(98%) contrast(92%);
-    /* This gives a light blue tint similar to #acc7f7 */
 }
 .FilterInput[type="date"]::-ms-input-placeholder { color: #acc7f7; }
 .FilterInput[type="date"]::placeholder { color: #acc7f7; }
@@ -187,7 +172,6 @@ width: 98%;
     line-height: 1 !important;
 }
 
-/* ===== SEARCH PANEL ===== */
 .search-panel {
   background-color: #ffffff;
   padding: 16px 24px;
@@ -227,11 +211,10 @@ width: 98%;
   padding: 6px 10px;
 }
 
-/* Search actions */
 .search-actions {
   display: flex;
-  justify-content: flex-start; /* Aligns buttons to the left */
-  gap: 10px; /* Optional: adds space between buttons */
+  justify-content: flex-start; 
+  gap: 10px; 
 }
 
 .btn-search {
@@ -264,14 +247,12 @@ width: 98%;
   color: #3d4e7a;
 }
 
-/* ===== STATUS DISPLAY ABOVE GRID ===== */
 .status-display {
   margin-top: 15px;
   font-weight: 600;
   color: #000000;
 }
 
-/* ===== GRID ===== */
 .data-grid {
   margin-top: 15px;
   background-color: white;
@@ -308,7 +289,6 @@ width: 98%;
   font-weight: bold;
 }
 
-/* General Button Style */
 .Button, .SearchButton, .ResetButton {
     font-family: Arial;
     font-size: 14px;
@@ -342,9 +322,9 @@ width: 98%;
     font-family: Helvetica;
     font-size: 12px !important;
     color: Black;
-    font-weight: bold;
+    font-weight: normal;
     min-width: 100px;
-    text-align: left; /* Changed from right to left */
+    text-align: left; 
 }
 
 .PrimaryButton {
@@ -397,7 +377,7 @@ width: 98%;
   align-items: center;
   justify-content: flex-start;
   background-color: #fff;
-  width: auto;           /* Full viewport width */
+  width: auto;        
   min-width: 0;
   min-height: 72px;
   overflow: hidden;
@@ -548,3 +528,100 @@ width: 98%;
   margin: 0;
   padding: 0;
 }
+
+/* From internal <style> tag */
+.page-item.active .page-link {
+    background-color: #c8dbfb !important;
+    border-color: #c8dbfb !important;
+    color: #000 !important;
+}
+
+.page-link {
+    color: black !important;
+}
+
+.table-rounded {
+    border-radius: 4px;
+}
+
+.pagination-scrollbar {
+    overflow-x: auto;
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+}
+
+    .pagination-scrollbar::-webkit-scrollbar {
+        display: none; /* Chrome, Safari, Opera */
+    }
+
+/* From inline styles - converted to classes */
+.container-no-padding {
+    padding-left: 0px !important;
+    padding-right: 0px !important;
+}
+
+.label-small {
+    font-size: 12px !important;
+}
+
+.table-container {
+    border: 1px solid #ccc !important;
+    border-radius: 4px !important;
+}
+
+.table-wrapper {
+    min-height: 395px !important;
+    overflow-y: auto !important;
+}
+
+.custom-table {
+    border-collapse: collapse !important;
+    width: 100%;
+    table-layout: fixed !important;
+    font-size: 12px !important;
+}
+
+.table-header {
+    background-color: #c8dbfb !important;
+    position: sticky;
+    top: 0;
+    z-index: 2 !important;
+}
+
+.table-th {
+    cursor: pointer;
+    white-space: nowrap !important;
+    position: relative !important;
+    background-color: #c8dbfb !important;
+    padding: 2px !important;
+    padding-left: 0.5rem !important;
+}
+
+.sort-icon {
+    padding: 1px 0 !important;
+    margin-bottom: 3.5px !important;
+}
+
+.edit-button {
+    border: none !important;
+    background: none !important;
+    padding: 0 !important;
+    margin: auto !important;
+}
+
+.icon-size {
+    width: 16px !important;
+    height: 16px !important;
+}
+
+.pagination-container {
+    display: flex !important;
+    align-items: center !important;
+    overflow: hidden !important;
+    margin: 5px !important;
+}
+
+.page-button {
+    min-width: 32px !important;
+}
+

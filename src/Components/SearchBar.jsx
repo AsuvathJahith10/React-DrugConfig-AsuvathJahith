@@ -1,6 +1,6 @@
 import React from "react";
 
-const RuleSetSearch = ({
+const SearchBar = ({
 
     searchFields,
         onFieldChange,
@@ -14,7 +14,7 @@ const RuleSetSearch = ({
                 <h5 className="mb-0">Search By</h5>
                 <p>Enter atleast one of the following</p>
                 <div className="FilterRow">
-                    <label className="FilterLabel" htmlFor="name">Name:</label>
+                    <label className="FilterLabel" htmlFor="name">Name</label>
                     <input
                         id="name"
                         className="FilterInput"
@@ -28,7 +28,7 @@ const RuleSetSearch = ({
                 </div>
                 {/* Dates row */}
                 <div className="FilterRow">
-                    <label className="FilterLabel" htmlFor="fromDate">Effective Date:</label>
+                    <label className="FilterLabel" htmlFor="fromDate">Effective Date</label>
                     <input
                         id="fromDate"
                         className="FilterInput"
@@ -36,7 +36,7 @@ const RuleSetSearch = ({
                         value={searchFields.EffectiveDate}
                         onChange={e => onFieldChange("EffectiveDate", e.target.value)}
                     />
-                    <label className="FilterLabel" htmlFor="toDate" style={{ marginLeft: 24 }}>Term Date:</label>
+                    <label className="FilterLabel" htmlFor="toDate" style={{ marginLeft: 24 }}>Term Date</label>
                     <input
                         id="toDate"
                         className="FilterInput"
@@ -44,7 +44,7 @@ const RuleSetSearch = ({
                         value={searchFields.TermDate}
                         onChange={e => onFieldChange("TermDate", e.target.value)}
                     />
-                    <label className="FilterLabel" htmlFor="lastModified" style={{ marginLeft: 24 }}>Last Modified:</label>
+                    <label className="FilterLabel" htmlFor="lastModified" style={{ marginLeft: 24 }}>Last Modified</label>
                     <input
                         id="lastModified"
                         className="FilterInput"
@@ -55,7 +55,7 @@ const RuleSetSearch = ({
                 </div>
                 {/* Status and Result Limit row */}
                 <div className="FilterRow">
-                    <label className="FilterLabel" htmlFor="status">Status:</label>
+                    <label className="FilterLabel" htmlFor="status">Status</label>
                     <select
                         id="status"
                         className="DropDownList FilterInput"
@@ -68,7 +68,7 @@ const RuleSetSearch = ({
                         <option value="Expired">Expired</option>
                         <option value="DeActive">Inactive</option>
                     </select>
-                    <label className="FilterLabel" htmlFor="resultLimit" style={{ marginLeft: 24 }}>Result Limit:</label>
+                    <label className="FilterLabel" htmlFor="resultLimit" style={{ marginLeft: 24 }}>Result Limit</label>
                     <input
                         id="resultLimit"
                         className="FilterInput"
@@ -88,4 +88,4 @@ const RuleSetSearch = ({
         </div>
     );
 };
-export default RuleSetSearch;
+export default SearchBar;

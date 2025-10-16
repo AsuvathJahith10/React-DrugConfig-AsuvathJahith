@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import '../Style/GridComponent.css';
+import '../App.css';
 
 
 const Datagrid = ({ Orgdata, title = "Active", columnAlignments = {}, columnDisplayNames = {}, columnWidths = {}, onDelete = null, showDelete = false, showEditButtonColumn = false }) => {
