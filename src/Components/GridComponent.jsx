@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import '../App.css';
 
 
-const Datagrid = ({ Orgdata, title = "Active", columnAlignments = {}, columnDisplayNames = {}, columnWidths = {}, onDelete = null, showDelete = false, showEditButtonColumn = false }) => {
+const GridComponent = ({ Orgdata, title = "Active", columnAlignments = {}, columnDisplayNames = {}, columnWidths = {}, onDelete = null, showDelete = false, showEditButtonColumn = false }) => {
 
     //Actual Data
     const [data, setData] = useState([]);
@@ -297,4 +297,4 @@ const Datagrid = ({ Orgdata, title = "Active", columnAlignments = {}, columnDisp
     //);
 }
 
-export default Datagrid;
+export default GridComponent;
