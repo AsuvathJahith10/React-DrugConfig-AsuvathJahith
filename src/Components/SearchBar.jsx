@@ -1,6 +1,6 @@
 import React from "react";
 
-const RuleSetSearch = ({
+const SearchBar = ({
 
     searchFields,
         onFieldChange,
@@ -88,4 +88,4 @@ const RuleSetSearch = ({
         </div>
     );
 };
-export default RuleSetSearch;
+export default SearchBar;

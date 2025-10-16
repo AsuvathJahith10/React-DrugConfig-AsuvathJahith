@@ -528,3 +528,100 @@ width: 98%;
   margin: 0;
   padding: 0;
 }
+
+/* From internal <style> tag */
+.page-item.active .page-link {
+    background-color: #c8dbfb !important;
+    border-color: #c8dbfb !important;
+    color: #000 !important;
+}
+
+.page-link {
+    color: black !important;
+}
+
+.table-rounded {
+    border-radius: 4px;
+}
+
+.pagination-scrollbar {
+    overflow-x: auto;
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+}
+
+    .pagination-scrollbar::-webkit-scrollbar {
+        display: none; /* Chrome, Safari, Opera */
+    }
+
+/* From inline styles - converted to classes */
+.container-no-padding {
+    padding-left: 0px !important;
+    padding-right: 0px !important;
+}
+
+.label-small {
+    font-size: 12px !important;
+}
+
+.table-container {
+    border: 1px solid #ccc !important;
+    border-radius: 4px !important;
+}
+
+.table-wrapper {
+    min-height: 395px !important;
+    overflow-y: auto !important;
+}
+
+.custom-table {
+    border-collapse: collapse !important;
+    width: 100%;
+    table-layout: fixed !important;
+    font-size: 12px !important;
+}
+
+.table-header {
+    background-color: #c8dbfb !important;
+    position: sticky;
+    top: 0;
+    z-index: 2 !important;
+}
+
+.table-th {
+    cursor: pointer;
+    white-space: nowrap !important;
+    position: relative !important;
+    background-color: #c8dbfb !important;
+    padding: 2px !important;
+    padding-left: 0.5rem !important;
+}
+
+.sort-icon {
+    padding: 1px 0 !important;
+    margin-bottom: 3.5px !important;
+}
+
+.edit-button {
+    border: none !important;
+    background: none !important;
+    padding: 0 !important;
+    margin: auto !important;
+}
+
+.icon-size {
+    width: 16px !important;
+    height: 16px !important;
+}
+
+.pagination-container {
+    display: flex !important;
+    align-items: center !important;
+    overflow: hidden !important;
+    margin: 5px !important;
+}
+
+.page-button {
+    min-width: 32px !important;
+}
+
