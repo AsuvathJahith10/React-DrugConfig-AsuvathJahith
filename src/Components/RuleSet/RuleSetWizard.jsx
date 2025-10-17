@@ -52,7 +52,7 @@ const NavigationButtons = ({ currentStep, totalSteps, onPrev, onNext }) => (
                     </button>
                 </div>
 
-                <div className="col-auto">
+                <div className="col-auto" style={{ paddingRight:5 }}>
                     <button className="PrimaryButton" onClick={onNext} disabled={currentStep === totalSteps} >
                         Next
                     </button>
@@ -109,12 +109,10 @@ const RuleSetWizard = ({
     return (
         <div className="container" style={{ padding:0 }}> {/*style={{ margin: "40px auto" }}*/}
             {/* Progress bar */}
-            <div className="row">
-                <div className="col-md-4">
-                </div>
-                <div className="col-md-4 offset-md-4">
+            <div className="row " style={{ justifyContent: "end" }}>
+                <div className="col-auto">
 
-                    <div
+                    <div 
                         style={{
                             display: "flex",
                             alignItems: "center",

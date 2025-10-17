@@ -19,7 +19,7 @@ const DrugListSearch = () => {
             `}</style>
             <div className="SearchPanel PanelStyle">
                 <div className="FilterRow FilterStyle">
-                    <label className="FilterLabel LebalStyle" htmlFor="status">*Drug Attribute Level</label>
+                    <label className="FilterLabel LebalStyle" htmlFor="status"><span class="RequiredSymbol">*</span>Drug Attribute Level</label>
                     <select
                         id="status"
                         className="DropDownList FilterInput"
