@@ -32,28 +32,28 @@ const NavigationButtons = ({ currentStep, totalSteps, onPrev, onNext }) => (
         <div className="col-md-4">
             <div className="row">
                 <div className="col-auto">
-                    <button className="btn btn-primary" onClick={onPrev} >
+                    <button className="Button" onClick={onPrev} >
                         Cancel
                     </button>
                 </div>
 
-                <div className="col-auto">
-                    <button className="btn btn-primary" onClick={onNext} >
-                        Save Draft
-                    </button>
-                </div>
+                {/*<div className="col-auto">*/}
+                {/*    <button className="PrimaryButton" onClick={onNext} >*/}
+                {/*        Save Draft*/}
+                {/*    </button>*/}
+                {/*</div>*/}
             </div>
         </div>
         <div className="col-md-4 offset-md-4">
             <div className="row" style={{ justifyContent: "end" }}>
                 <div className="col-auto">
-                    <button className="btn btn-primary" onClick={onPrev} disabled={currentStep === 1} >
+                    <button className="Button" onClick={onPrev} disabled={currentStep === 1} >
                         Back
                     </button>
                 </div>
 
                 <div className="col-auto">
-                    <button className="btn btn-primary" onClick={onNext} disabled={currentStep === totalSteps} >
+                    <button className="PrimaryButton" onClick={onNext} disabled={currentStep === totalSteps} >
                         Next
                     </button>
                 </div>
@@ -62,8 +62,16 @@ const NavigationButtons = ({ currentStep, totalSteps, onPrev, onNext }) => (
     </div>
 );
 
-const RuleSetWizard = () => {
+const RuleSetWizard = ({
+    onTitleChange
+}) => {
+
+    const newTitle = "New RuleSet Configuration";
+    onTitleChange(newTitle); 
+
     const totalSteps = 5;
+    
+
     const [currentStep, setCurrentStep] = useState(1);
 
     const handleNext = () => {
@@ -99,7 +107,7 @@ const RuleSetWizard = () => {
     };
 
     return (
-        <div className="container" style={{ margin: "40px auto" }}>
+        <div className="container" > {/*style={{ margin: "40px auto" }}*/}
             {/* Progress bar */}
             <div className="row">
                 <div className="col-md-4">
@@ -111,8 +119,8 @@ const RuleSetWizard = () => {
                             display: "flex",
                             alignItems: "center",
                             justifyContent: "space-between",
-                            marginBottom: 40,
-                            width: '350px'
+                            marginBottom: 10,
+                            width: '250px'
                         }}
                     >
                         {Array.from({ length: totalSteps }).map((_, i) => {
@@ -131,12 +139,12 @@ const RuleSetWizard = () => {
             </div>
 
             {/* Navigation buttons */}
-            <NavigationButtons
-                currentStep={currentStep}
-                totalSteps={totalSteps}
-                onPrev={handlePrev}
-                onNext={handleNext}
-            />
+            {/*<NavigationButtons*/}
+            {/*    currentStep={currentStep}*/}
+            {/*    totalSteps={totalSteps}*/}
+            {/*    onPrev={handlePrev}*/}
+            {/*    onNext={handleNext}*/}
+            {/*/>*/}
 
             {/* Step content */}
             <div

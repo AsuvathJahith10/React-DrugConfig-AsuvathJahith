@@ -11,7 +11,7 @@ const SearchBar = ({
     return (
         <div className="SearchPanel">
             <div>
-                <h5 className="mb-0">Search By</h5>
+                {/*<h5 className="mb-0">Search By</h5>*/}
                 <p>Enter atleast one of the following</p>
                 <div className="FilterRow">
                     <label className="FilterLabel" htmlFor="name">Name</label>

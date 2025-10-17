@@ -213,12 +213,16 @@ const RuleSetMaster = () => {
         setFilteredData(activeOnly);
     };
 
+    const [title, setTitle] = useState('RuleSet Configuration - Search');
+    const handleTitleChange = (newTitle) => {
+        setTitle(newTitle);
+    };
 
     return (
         <div>
             <div className="row mt-2">
                 <div className="col-auto me-auto mt-2">
-                    <h5>RuleSet Configuration</h5>
+                    <div className="H1">{title}</div>
                 </div>
                 <div className="col-auto d-flex align-items-center">
                     <button className="PrimaryButton" style={{ display: isHidden ? 'none' : 'block' }} data-bs-toggle="modal" data-bs-target="#exampleModal">New RuleSet</button>
@@ -275,11 +279,11 @@ const RuleSetMaster = () => {
                         <div className="modal-footer">
                             <button
                                 type="button"
-                                className="btn btn-outline-primary"
+                                className="Button"
                                 data-bs-dismiss="modal">
                                 Cancel
                             </button>
-                            <button type="button" className="btn btn-primary" data-bs-dismiss="modal" onClick={loadRuleSetWizard}>
+                            <button type="button" className="PrimaryButton" data-bs-dismiss="modal" onClick={loadRuleSetWizard}>
                                 Next
                             </button>
                         </div>
@@ -296,13 +300,16 @@ const RuleSetMaster = () => {
                 />
                 }
                 {activeComponent === 'RuleSetSearch' && filteredData && filteredData.length > 0 ? (
-                   /* <GridComponent title={selectedStatus} Orgdata={cleanedData} />*/
-                    <GridComponent title={selectedStatus + " RuleSets"} Orgdata={cleanedData} columnAlignments={columnAlignments} columnDisplayNames={columnDisplayNames} columnWidths={columnWidths} showEditButtonColumn={true}  />
+                    /* <GridComponent title={selectedStatus} Orgdata={cleanedData} />*/
+                    <GridComponent title={selectedStatus + " RuleSets"} Orgdata={cleanedData} columnAlignments={columnAlignments} columnDisplayNames={columnDisplayNames} columnWidths={columnWidths} showEditButtonColumn={true} />
                 ) : activeComponent === 'RuleSetSearch' ? (
                     <p>No Data found</p>
                 ) : (<p></p>)}
 
-                {activeComponent === 'RuleSetWizard' && <RuleSetWizard />}
+                {activeComponent === 'RuleSetWizard' && <RuleSetWizard
+                    onTitleChange={handleTitleChange}
+
+                />}
             </div>
         </div>
     )
