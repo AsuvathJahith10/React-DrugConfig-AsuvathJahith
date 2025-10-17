@@ -122,10 +122,10 @@ const RulesSetDetails = () => {
 
     return (
         <div>
-            <div className="ErrorMessage">
-                {parse(errorMessageDetails)}</div>
-            <div className="SuccessMessage">
-                {successMessageInfo}</div>
+            {errorMessageDetails && <div className="ErrorMessage">
+                {parse(errorMessageDetails)}</div>}
+            {successMessageInfo && <div className="SuccessMessage">
+                {successMessageInfo}</div>}
 
             <div className="SectionLabel">
                 RuleSet Info

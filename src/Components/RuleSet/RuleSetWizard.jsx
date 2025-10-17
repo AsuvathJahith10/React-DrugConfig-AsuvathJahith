@@ -107,7 +107,7 @@ const RuleSetWizard = ({
     };
 
     return (
-        <div className="container" > {/*style={{ margin: "40px auto" }}*/}
+        <div className="container" style={{ padding:0 }}> {/*style={{ margin: "40px auto" }}*/}
             {/* Progress bar */}
             <div className="row">
                 <div className="col-md-4">
