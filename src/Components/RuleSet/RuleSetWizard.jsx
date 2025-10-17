@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import RulesSetDetails from './RuleSetDetails';
-import DrugList from './DrugList';
+import DrugList from './RuleSetDrugList';
 const StepCircle = ({ isActive, isCompleted, isLast }) => (
     <>
         <div

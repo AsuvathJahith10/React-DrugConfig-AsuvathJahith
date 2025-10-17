@@ -138,6 +138,8 @@ const columnWidths = {
 
 const columns = ["Name", "EffectiveDate", "TermDate", "LastModified", "Status"];
 
+const Datecolumns = ["EffectiveDate", "TermDate", "LastModified"];
+
 
 
 const RuleSetMaster = () => {
@@ -155,6 +157,8 @@ const RuleSetMaster = () => {
     const [selectedStatus, setSelectedStatus] = useState("Active");
     const [searchFields, setSearchFields] = useState(defaultFields);
     const [filteredData, setFilteredData] = useState([]);
+
+    const [editRow, setEditRow] = useState(null);
 
     const [isHidden, setIsHidden] = useState(false);
 
@@ -194,7 +198,7 @@ const RuleSetMaster = () => {
         return sorted.map(item => {
             const newItem = {};
             columns.forEach(col => {
-                if (["EffectiveDate", "TermDate", "LastModified"].includes(col)) {
+                if (Datecolumns.includes(col)) {
                     const date = new Date(item[col]);
                     newItem[col] = date.toLocaleDateString("en-US", options); // Format to MM/DD/YYYY
                 } else {
@@ -216,6 +220,11 @@ const RuleSetMaster = () => {
     const [title, setTitle] = useState('RuleSet Configuration - Search');
     const handleTitleChange = (newTitle) => {
         setTitle(newTitle);
+    };
+    
+        const handleEditRow = (row) => {
+        setEditRow(row);
+        loadRuleSetWizard();
     };
 
     return (
@@ -300,8 +309,8 @@ const RuleSetMaster = () => {
                 />
                 }
                 {activeComponent === 'RuleSetSearch' && filteredData && filteredData.length > 0 ? (
-                    /* <GridComponent title={selectedStatus} Orgdata={cleanedData} />*/
-                    <GridComponent title={selectedStatus + " RuleSets"} Orgdata={cleanedData} columnAlignments={columnAlignments} columnDisplayNames={columnDisplayNames} columnWidths={columnWidths} showEditButtonColumn={true} />
+                   /* <GridComponent title={selectedStatus} Orgdata={cleanedData} />*/
+                    <GridComponent title={selectedStatus + " RuleSets"} Orgdata={cleanedData} columnAlignments={columnAlignments} columnDisplayNames={columnDisplayNames} columnWidths={columnWidths} showEditButtonColumn={true} Datecolumns={Datecolumns} onEditRow={handleEditRow} />
                 ) : activeComponent === 'RuleSetSearch' ? (
                     <p>No Data found</p>
                 ) : (<p></p>)}

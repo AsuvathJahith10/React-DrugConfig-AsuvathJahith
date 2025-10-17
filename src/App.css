@@ -562,6 +562,7 @@ width: 98%;
 
 .label-small {
     font-size: 12px !important;
+    font-weight:bold;
 }
 
 .table-container {

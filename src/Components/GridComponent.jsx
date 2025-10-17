@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import '../App.css';
 
 
-const GridComponent = ({ Orgdata, title = "Active", columnAlignments = {}, columnDisplayNames = {}, columnWidths = {}, onDelete = null, showDelete = false, showEditButtonColumn = false }) => {
+const GridComponent = ({ Orgdata = {}, title = "Active", columnAlignments = {}, columnDisplayNames = {}, columnWidths = {}, onDelete = null, showDelete = false, Datecolumns = {}, onEditRow = () => { }, showEditButtonColumn = false, onSelectionChange = () => { }, ShowRowSelection = false, rowKeyField = null}) => {
 
     //Actual Data
     const [data, setData] = useState([]);
@@ -19,19 +19,39 @@ const GridComponent = ({ Orgdata, title = "Active", columnAlignments = {}, colum
     const [rowsPerPage] = useState(10);
     const [currentPage, setCurrentPage] = useState(1);
 
+    //select check box
+    const [selectedRows, setSelectedRows] = useState([]);
+    const [selectAll, setSelectAll] = useState(false);
+
+    const [cleanedData, setcleanedData] = useState([])
+
     useEffect(() => {
+        onSelectionChange(selectedRows);
+    }, [selectedRows])
+       
+    useEffect(() => {
+        setcleanedData(Orgdata.filter(row =>
+            Object.values(row).some(value => value !== null && value !== undefined && String(value).trim() !== '')
+        ));
+
         if (Orgdata && Orgdata.length > 0) {
+            console.log("Setting cleaned data from Orgdata:", Orgdata);
             setData(Orgdata);
             setCurrentPage(1);
 
+            console.log("Orgdata changed:", data);
             const initialFilters = Object.keys(Orgdata[0]).reduce((acc, key) => {
                 acc[key] = '';
                 return acc;
             }, {});
             setFilters(initialFilters);
+            setSelectAll(false);
+            setSelectedRows([]);
         }
         else
             setData(Orgdata);
+            setSelectAll(false);
+            setSelectedRows([]);
     }, [Orgdata]);
 
 
@@ -49,7 +69,8 @@ const GridComponent = ({ Orgdata, title = "Active", columnAlignments = {}, colum
         let bValue = b[sortConfig.key];
 
         // Check if the column is a date field
-        const isDateField = ['effectivedate', 'termdate', 'lastmodified'].includes(sortConfig.key);
+        const isDateField = (Array.isArray(Datecolumns) && Datecolumns.includes(sortConfig.key)) ||
+            (Datecolumns && typeof Datecolumns === 'object' && Datecolumns[sortConfig.key]);
         if (isDateField) {
             aValue = Date.parse(aValue);
             bValue = Date.parse(bValue);
@@ -60,8 +81,7 @@ const GridComponent = ({ Orgdata, title = "Active", columnAlignments = {}, colum
         if (aValue < bValue) return sortConfig.direction === "asc" ? -1 : 1;
         if (aValue > bValue) return sortConfig.direction === "asc" ? 1 : -1;
         return 0;
-    })
-        , [filteredData, sortConfig]);
+    }),[filteredData, sortConfig]);
 
     // Handle filter change
     const handleFilterChange = (e, column) => {
@@ -105,7 +125,7 @@ const GridComponent = ({ Orgdata, title = "Active", columnAlignments = {}, colum
     };
     //const rowsPerPage = 15;
     //const totalPages = Math.ceil(data.length / rowsPerPage);
-    const headers = data && data.length > 0 ? Object.keys(data[0]) : [];
+    let headers = data && data.length > 0 ? Object.keys(data[0]) : [];
     const pageRefs = useRef([]);
 
     useEffect(() => {
@@ -125,6 +145,25 @@ const GridComponent = ({ Orgdata, title = "Active", columnAlignments = {}, colum
     const numberOfColumns = headers.length;
     const defaultColumnWidth = `calc((100% - ${fixedColumnWidthPx}px) / ${numberOfColumns})`;
 
+    const handleCheckboxChange = (keyValue) => {
+        setSelectedRows((prev) =>
+            prev.includes(keyValue)
+                ? prev.filter((v) => v !== keyValue)
+                : [...prev, keyValue]
+        );
+    };
+
+    const handleSelectAllChange = (e) => {
+        const checked = e.target.checked;
+        if (checked) {
+            const allKeys = data.map((row) => row[rowKeyField]); // Select all keys in the entire data
+            setSelectedRows(allKeys);
+        } else {
+            setSelectedRows([]);
+        }
+        setSelectAll(checked);
+    };
+ 
     return (
         <div className="container mt-3 container-no-padding" >
             <div className="row justify-content-center" >
@@ -132,27 +171,40 @@ const GridComponent = ({ Orgdata, title = "Active", columnAlignments = {}, colum
                     <h6 className="mb-0" >{title}</h6>
                 </div>
                 <div className="col-auto">
-                    <label className="label-small">{sortedData.length} Records</label>
+                    <label className="label-small">{cleanedData.length > 0 ? sortedData.length : 0} Records</label>
                 </div>
             </div>
             <div className="table-container">
                 <div className="table-responsive table-wrapper" >
                     <table className="table table-striped table-bordered table-hover table-rounded mb-0 custom-table" cellPadding="10">
                         <colgroup>
-                            {showEditButtonColumn && (
+                            {(showEditButtonColumn || ShowRowSelection) && (
                                 <col style={{ width: `${fixedColumnWidthPx}px` }} />
                             )}
-                            {headers.map((key) => (
-                                <col key={key} style={{ width: columnWidths[key] || defaultColumnWidth }} />
-                            ))}
+                            {(headers.map((key, index) => (<col key={index} style={{ width: columnWidths[key] || defaultColumnWidth }} />)))}
                         </colgroup>
                         <thead className="table-header">
                             <tr>
-                                {showEditButtonColumn===true && (
+                                {showEditButtonColumn && (
                                     <th style={{
                                         backgroundColor: '#c8dbfb', width: `${fixedColumnWidthPx}px`, textAlign: "center"  // <-- add this line 
                                     }}></th>)}
-                                {headers.map((key) => (
+                                {data.length > 0 && ShowRowSelection && (
+                                    <th className="table-th" style={{ backgroundColor: '#c8dbfb', width: `${fixedColumnWidthPx}px`, textAlign: "center" }}>
+                                        <div className="align-items-center" style={{ marginRight:'11px', marginBottom:'5px'}}>
+                                        <input className="text-capitalize"
+                                                type="checkbox"
+                                                onChange={handleSelectAllChange}
+                                                checked={selectAll}
+                                                //indeterminate={selectedRows.length > 0 && selectedRows.length < currentRows.length ? "true" : "false"} // optional visual hint
+                                                aria-label="Select all rows"
+                                            />
+                                            </div>
+                                    </th>
+                                )}
+
+                                {
+                                    (headers.map((key) => (
                                     <th key={key} className="table-th" style={{ textAlign: columnAlignments[key] || 'left', width: columnWidths[key] }}>
                                         <div className="align-items-center" onClick={() => handleSort(key)}>
                                             <span className="text-capitalize">{columnDisplayNames[key] || key}</span>
@@ -160,8 +212,8 @@ const GridComponent = ({ Orgdata, title = "Active", columnAlignments = {}, colum
                                         </div>
 
                                     </th>
-                                ))}
-                                {showDelete === true && (
+                                ))) }
+                                {  showDelete === true && (
                                     <th style={{
                                         backgroundColor: '#c8dbfb',
                                         width: `${fixedColumnWidthPx}px`,
@@ -172,16 +224,28 @@ const GridComponent = ({ Orgdata, title = "Active", columnAlignments = {}, colum
                             </tr>
                         </thead>
                         <tbody>
-                            {currentRows.length > 0 ? (
+                            {cleanedData.length > 0 && currentRows.length > 0 ? (
                                 currentRows.map((item, index) => (
 
                                     <tr key={index}>
                                        {showEditButtonColumn && (
                                             <td style={{ width: `${fixedColumnWidthPx}px` }}>
                                                 <button /*onClick={onClick}*/ style={{ border: "none", background: "none", padding: 0, margin: 'auto' }}>
-                                                    <img src={`${process.env.PUBLIC_URL}/Images/EditCheck.png`} alt="button" style={{ width: '16px', height: '16px' }} />
+                                                    <img onClick={() => onEditRow(item)} src={`${process.env.PUBLIC_URL}/Images/EditCheck.png`} alt="button" style={{ width: '16px', height: '16px' }} />
                                                 </button>
                                             </td>)}
+
+                                        {ShowRowSelection && (
+                                            <td style={{ width: `${fixedColumnWidthPx}px` }}>
+                                                <div style={{marginTop:'4px'}}>
+                                                    <input 
+                                                        type="checkbox"
+                                                        checked={selectedRows.includes(item[rowKeyField])}
+                                                        onChange={() => handleCheckboxChange(item[rowKeyField])}
+                                                    />
+                                                </div>
+                                            </td>
+                                        )}
                                         {headers.map((header) => (
                                             <td key={header} style={{ textAlign: columnAlignments[header] || 'left', width: columnWidths[header] }}>{item[header]}</td>
                                         ))}
@@ -206,9 +270,10 @@ const GridComponent = ({ Orgdata, title = "Active", columnAlignments = {}, colum
                                 ))
                             ) : (
                                 <tr>
-                                    <td colSpan={headers.length + 1} className="text-center">Loading data...</td>
+                                    {/*<td colSpan={headers.length + 1} className="text-center">No Data...</td>*/}
                                 </tr>
-                            )}
+                            )
+                            }
 
                         </tbody>
                     </table>
@@ -246,7 +311,7 @@ const GridComponent = ({ Orgdata, title = "Active", columnAlignments = {}, colum
                                 <ul
                                     className="pagination pagination-sm mb-0"
                                 >
-                                    {[...Array(totalPages)].map((_, i) => {
+                                    {cleanedData.length > 0 && [...Array(totalPages)].map((_, i) => {
                                         const page = i + 1;
                                         return (
                                             <li
