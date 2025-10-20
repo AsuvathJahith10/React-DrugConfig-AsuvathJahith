@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import RulesSetDetails from './RuleSetDetails';
 import DrugList from './RuleSetDrugList';
 const StepCircle = ({ isActive, isCompleted, isLast }) => (
@@ -27,21 +27,21 @@ const StepCircle = ({ isActive, isCompleted, isLast }) => (
     </>
 );
 
-const NavigationButtons = ({ currentStep, totalSteps, onPrev, onNext }) => (
+const NavigationButtons = ({ currentStep, totalSteps, onPrev, onNext, onSaveDraft, onCancel }) => (
     <div className="row" style={{ display: "flex", justifyContent: "space-between", marginTop: 20, marginBottom: 20 }}>
         <div className="col-md-4">
             <div className="row">
                 <div className="col-auto">
-                    <button className="Button" onClick={onPrev} >
+                    <button className="Button" onClick={onCancel} >
                         Cancel
                     </button>
                 </div>
 
-                {/*<div className="col-auto">*/}
-                {/*    <button className="PrimaryButton" onClick={onNext} >*/}
-                {/*        Save Draft*/}
-                {/*    </button>*/}
-                {/*</div>*/}
+                <div className="col-auto">
+                    <button className="PrimaryButton" onClick={onSaveDraft} >
+                        Save Draft
+                    </button>
+                </div>
             </div>
         </div>
         <div className="col-md-4 offset-md-4">
@@ -63,11 +63,14 @@ const NavigationButtons = ({ currentStep, totalSteps, onPrev, onNext }) => (
 );
 
 const RuleSetWizard = ({
-    onTitleChange
+    onTitleChange,
+    onCancel,
+    onSaveDraft
 }) => {
 
-    const newTitle = "New RuleSet Configuration";
-    onTitleChange(newTitle); 
+    useEffect(() => {
+        onTitleChange("New RuleSet Configuration");
+    }, [onTitleChange])
 
     const totalSteps = 5;
     
@@ -82,6 +85,34 @@ const RuleSetWizard = ({
         if (currentStep > 1) setCurrentStep(currentStep - 1);
     };
 
+    // State object storing form data per step
+    const [stepData, setStepData] = useState({
+        1: {},  // For RulesSetDetails
+        2: { includedDrugs: [], excludedDrugs: [] },  // For DrugList
+        3: {},
+        4: {},
+        5: {}
+    });
+
+    // Update data for a given step
+    const updateStepData = (step, data) => {
+        setStepData(prev => ({
+            ...prev,
+            [step]: data
+        }));
+    };
+
+    // Handle changes in the DrugList (include/exclude drugs)
+    const handleInExdataChange = (newInExdata) => {
+        const { includeGrid, excludeGrid } = newInExdata;
+
+        // Update the stepData for Step 2 with new include/exclude drugs
+        updateStepData(2, {
+            includedDrugs: includeGrid,
+            excludedDrugs: excludeGrid
+        });
+    };
+
     // Define step components inline
     //const Step1 = () => <div>Content for Step 1</div>;
     // const Step2 = () => <div>Content for Step 2</div>;
@@ -92,9 +123,15 @@ const RuleSetWizard = ({
     const renderStep = () => {
         switch (currentStep) {
             case 1:
-                return <RulesSetDetails />;
+                return <RulesSetDetails data={stepData[1]} onChange={data => updateStepData(1, data)} />;
             case 2:
-                return <DrugList />;
+                return <DrugList
+                    InExdata={{
+                        includeGrid: stepData[2].includedDrugs,
+                        excludeGrid: stepData[2].excludedDrugs
+                    }}
+                    onChange={handleInExdataChange}
+                />
             case 3:
                 return <Step3 />;
             case 4:
@@ -104,6 +141,15 @@ const RuleSetWizard = ({
             default:
                 return <RulesSetDetails />;
         }
+    };
+
+    // On Save Draft, collect all data up to current step and call prop
+    const handleSaveDraft = () => {
+        const dataUpToCurrentStep = {};
+        for (let i = 1; i <= currentStep; i++) {
+            dataUpToCurrentStep[i] = stepData[i];
+        }
+        onSaveDraft(currentStep, dataUpToCurrentStep);
     };
 
     return (
@@ -161,6 +207,8 @@ const RuleSetWizard = ({
             <NavigationButtons
                 currentStep={currentStep}
                 totalSteps={totalSteps}
+                onSaveDraft={handleSaveDraft}
+                onCancel={onCancel}
                 onPrev={handlePrev}
                 onNext={handleNext}
             />

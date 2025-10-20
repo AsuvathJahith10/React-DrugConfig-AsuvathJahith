@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "../../App.css";
 import parse from 'html-react-parser';
 
-const RulesSetDetails = () => {
+const RulesSetDetails = ({ data = {}, onChange }) => {
 
     const defaultFields = {
         Name: "",
@@ -24,10 +24,19 @@ const RulesSetDetails = () => {
     const [successMessageInfo, setSuccessMessageInfo] = useState('');
 
     const onFieldChange = (field, value) => {
-        setRuleSetFields(prev => ({ ...prev, [field]: value }));
+        //setRuleSetFields(prev => ({ ...prev, [field]: value }));
+
+        const updatedFields = { ...ruleSetFields, [field]: value };
+        setRuleSetFields(updatedFields);
+        onChange && onChange(updatedFields);
     };
 
-    const [ruleSetFields, setRuleSetFields] = useState('');
+    const [ruleSetFields, setRuleSetFields] = useState(defaultFields);
+
+    useEffect(() => {
+        // Merge defaults with incoming data
+        setRuleSetFields(prev => ({ ...defaultFields, ...data }));
+    }, [data]);
 
     const handleSaveDraft = (event) => {
         event.preventDefault();
@@ -133,7 +142,7 @@ const RulesSetDetails = () => {
 
             <div className="input-row-container">
                 <div className="input-row FilterRow">
-                <label className="FilterLabel" htmlFor="name"><span class="RequiredSymbol">*</span>Name</label>
+                <label className="FilterLabel" htmlFor="name"><span className="RequiredSymbol">*</span>Name</label>
                 <input
                     id="name"
                     className="FilterInput"
@@ -145,7 +154,7 @@ const RulesSetDetails = () => {
                 />
             </div>
                 <div className="FilterRow input-row">
-                <label className="FilterLabel" htmlFor="ruleSetName"><span class="RequiredSymbol">*</span>RuleSet Name</label>
+                    <label className="FilterLabel" htmlFor="ruleSetName"><span className="RequiredSymbol">*</span>RuleSet Name</label>
                 <input
                     id="ruleSetName"
                     className="FilterInput"
@@ -169,7 +178,7 @@ const RulesSetDetails = () => {
                 />
             </div>
                 <div className="FilterRow input-row">
-                <label className="FilterLabel" htmlFor="effectiveDate"><span class="RequiredSymbol">*</span>Effective Date:</label>
+                    <label className="FilterLabel" htmlFor="effectiveDate"><span className="RequiredSymbol">*</span>Effective Date:</label>
                 <input
                     id="effectiveDate"
                     className="FilterInput"
@@ -179,7 +188,7 @@ const RulesSetDetails = () => {
                     onChange={e => onFieldChange("EffectiveDate", e.target.value)}
                 />
 
-                <label className="FilterLabel" htmlFor="termDate" style={{ marginLeft: 14 }}><span class="RequiredSymbol">*</span>Term Date:</label>
+                    <label className="FilterLabel" htmlFor="termDate" style={{ marginLeft: 14 }}><span className="RequiredSymbol">*</span>Term Date:</label>
                 <input
                     id="termDate"
                     className="FilterInput"
@@ -190,7 +199,7 @@ const RulesSetDetails = () => {
                 />
             </div>
                 <div className="FilterLabel input-row">
-                <label className="FilterLabel" htmlFor="type"><span class="RequiredSymbol">*</span>Type</label>
+                    <label className="FilterLabel" htmlFor="type"><span className="RequiredSymbol">*</span>Type</label>
                 <select
                     id="type"
                     style={{ marginLeft: 10, minWidth: "200px", flex: "1 1 auto", maxWidth: "200px" }}
@@ -201,7 +210,7 @@ const RulesSetDetails = () => {
                     <option value="IsPDL">PDL</option>
                     <option value="IsClinical">Clinical</option>
                 </select>
-                <label className="FilterLabel" htmlFor="drugApprovalLevel" style={{ marginLeft: 24 }}><span class="RequiredSymbol">*</span>Drug Approval Level</label>
+                    <label className="FilterLabel" htmlFor="drugApprovalLevel" style={{ marginLeft: 24 }}><span className="RequiredSymbol">*</span>Drug Approval Level</label>
                 <select style={{ marginLeft: 24, minWidth: "200px", flex: "1 1 auto", maxWidth: "200px" }}
                     id="drugApprovalLevel"
                     value={ruleSetFields.DrugApprovalLevel}
@@ -214,7 +223,7 @@ const RulesSetDetails = () => {
             </div>
             </div>
             <div className="ButtonRow">
-                <button className="PrimaryButton" onClick={handleSaveDraft}>Save Draft</button>
+                {/*<button className="PrimaryButton" onClick={handleSaveDraft}>Save Draft</button>*/}
                 <button className="Button" onClick={handleReset}>Reset</button>
             </div>
 

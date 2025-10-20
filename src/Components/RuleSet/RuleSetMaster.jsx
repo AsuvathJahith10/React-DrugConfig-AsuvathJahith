@@ -146,6 +146,7 @@ const RuleSetMaster = () => {
     const [activeComponent, setActiveComponent] = useState('RuleSetSearch');
 
     const loadRuleSetSearch = () => {
+        setIsHidden(false)
         setActiveComponent('RuleSetSearch');
     };
 
@@ -226,6 +227,23 @@ const RuleSetMaster = () => {
         setEditRow(row);
         loadRuleSetWizard();
     };
+
+    const handleSaveDraft = (currentStep, dataUpToCurrentStep) => { // Here you receive the currentStep and all data up to current step
+        console.log("Saving draft at step:", currentStep);
+        console.log("Draft data:", dataUpToCurrentStep);
+
+        // Example: Send draft data to backend API here using fetch/axios
+        /*
+        fetch('/api/saveDraft', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ currentStep, data: dataUpToCurrentStep }),
+        }).then(res => {
+            if(res.ok) alert("Draft saved successfully!");
+        });
+        */
+};
+
 
     return (
         <div>
@@ -317,7 +335,8 @@ const RuleSetMaster = () => {
 
                 {activeComponent === 'RuleSetWizard' && <RuleSetWizard
                     onTitleChange={handleTitleChange}
-
+                    onCancel={loadRuleSetSearch}
+                    onSaveDraft={handleSaveDraft}
                 />}
             </div>
         </div>

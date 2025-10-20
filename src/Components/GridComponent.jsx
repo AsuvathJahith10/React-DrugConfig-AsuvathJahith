@@ -2,7 +2,8 @@ import React, { useEffect, useState, useRef } from 'react';
 import '../App.css';
 
 
-const GridComponent = ({ Orgdata = {}, title = "Active", columnAlignments = {}, columnDisplayNames = {}, columnWidths = {}, onDelete = null, showDelete = false, Datecolumns = {}, onEditRow = () => { }, showEditButtonColumn = false, onSelectionChange = () => { }, ShowRowSelection = false, rowKeyField = null}) => {
+const GridComponent = ({ Orgdata = {}, title = "Active", columnAlignments = {}, columnDisplayNames = {}, columnWidths = {}, hiddenColumns = [], onDelete = null, showDelete = false, Datecolumns = {}, onEditRow = () => { }, showEditButtonColumn = false, onSelectionChange = () => { }, ShowRowSelection = false, rowKeyField = null,
+    paginationMode = "client", /*"client" or "server"*/ onPageChange = () => { },   /* function(page, rowsPerPage)*/ totalRecords = null, /*// total record count from DB for server-side*/  pageSizeOptions = [10, 25, 50], defaultRowsPerPage = 10 }) => {
 
     //Actual Data
     const [data, setData] = useState([]);
@@ -16,7 +17,7 @@ const GridComponent = ({ Orgdata = {}, title = "Active", columnAlignments = {}, 
     const [filters, setFilters] = useState({});
 
     //Pagging
-    const [rowsPerPage] = useState(10);
+    const [rowsPerPage, setRowsPerPage] = useState(defaultRowsPerPage);
     const [currentPage, setCurrentPage] = useState(1);
 
     //select check box
@@ -114,18 +115,10 @@ const GridComponent = ({ Orgdata = {}, title = "Active", columnAlignments = {}, 
         setFilterPopup(filterPopup === key ? null : key);
     };
 
-    // Pagination
-    const totalPages = Math.ceil(sortedData.length / rowsPerPage);
-    const indexOfLastRow = currentPage * rowsPerPage;
-    const indexOfFirstRow = indexOfLastRow - rowsPerPage;
-    const currentRows = sortedData.slice(indexOfFirstRow, indexOfLastRow);
-
-    const handlePageChange = (page) => {
-        if (page >= 1 && page <= totalPages) setCurrentPage(page);
-    };
+   
     //const rowsPerPage = 15;
     //const totalPages = Math.ceil(data.length / rowsPerPage);
-    let headers = data && data.length > 0 ? Object.keys(data[0]) : [];
+    let headers = data && data.length > 0 ? Object.keys(data[0]).filter(key => !hiddenColumns.includes(key)) : [];
     const pageRefs = useRef([]);
 
     useEffect(() => {
@@ -156,12 +149,42 @@ const GridComponent = ({ Orgdata = {}, title = "Active", columnAlignments = {}, 
     const handleSelectAllChange = (e) => {
         const checked = e.target.checked;
         if (checked) {
-            const allKeys = data.map((row) => row[rowKeyField]); // Select all keys in the entire data
+            const allKeys = currentRows.map(row => row[rowKeyField]);// Select all keys in the entire data
             setSelectedRows(allKeys);
         } else {
             setSelectedRows([]);
         }
         setSelectAll(checked);
+    };
+
+
+
+    useEffect(() => {
+        if (paginationMode === "server") {
+            onPageChange(currentPage, rowsPerPage);
+        }
+    }, [currentPage, rowsPerPage]);
+
+
+    const pagedData = React.useMemo(() => {
+        if (paginationMode === "server") return data;
+        const start = (currentPage - 1) * rowsPerPage;
+        return sortedData.slice(start, start + rowsPerPage);
+    }, [paginationMode, sortedData, data, currentPage, rowsPerPage]);
+
+    const totalRecordsCount = paginationMode === "server" && totalRecords !== null
+        ? totalRecords
+        : sortedData.length;
+
+    const totalPages = Math.ceil(totalRecordsCount / rowsPerPage);
+    // Pagination
+    //const totalPages = Math.ceil(sortedData.length / rowsPerPage);
+    const indexOfLastRow = currentPage * rowsPerPage;
+    const indexOfFirstRow = indexOfLastRow - rowsPerPage;
+    const currentRows = pagedData;
+
+    const handlePageChange = (page) => {
+        if (page >= 1 && page <= totalPages) setCurrentPage(page);
     };
  
     return (
@@ -278,84 +301,101 @@ const GridComponent = ({ Orgdata = {}, title = "Active", columnAlignments = {}, 
                         </tbody>
                     </table>
                 </div>
-                <div>
-                    <nav aria-label="Page navigation">
-                        <div className="pagination-container">
-                            {/* First */}
-                            <button
-                                className="btn btn-sm btn-light page-button"
-                                onClick={() => handlePageChange(1)}
-                                disabled={currentPage === 1}
-                                title="First Page">
-                                <i className="bi bi-skip-start-fill"></i>
-                            </button>
+                <div className="row">
+                    <div className="col-md-11" style={{ paddingRight:'0px'}}>
+                        <nav aria-label="Page navigation">
+                            <div className="pagination-container">
+                                {/* First */}
+                                <button
+                                    className="btn btn-sm btn-light page-button"
+                                    onClick={() => handlePageChange(1)}
+                                    disabled={currentPage === 1}
+                                    title="First Page">
+                                    <i className="bi bi-skip-start-fill"></i>
+                                </button>
 
-                            {/* Previous */}
-                            <button
-                                className="btn btn-sm btn-light page-button"
-                                onClick={() => handlePageChange(currentPage - 1)}
-                                disabled={currentPage === 1}
-                                title="Previous Page">
-                                <i className="bi bi-caret-left-fill"></i>
-                            </button>
+                                {/* Previous */}
+                                <button
+                                    className="btn btn-sm btn-light page-button"
+                                    onClick={() => handlePageChange(currentPage - 1)}
+                                    disabled={currentPage === 1}
+                                    title="Previous Page">
+                                    <i className="bi bi-caret-left-fill"></i>
+                                </button>
 
-                            {/* Scrollable page numbers */}
-                            <div className="pagination-scrollbar"
-                                style={{
-                                    overflowX: 'auto',
-                                    flex: 1,
-                                    //scrollbarWidth: 'thin',
-                                    //scrollbarColor: '#c8dbfb transparent',
-                                }}
-                            >
-                                <ul
-                                    className="pagination pagination-sm mb-0"
+                                {/* Scrollable page numbers */}
+                                <div className="pagination-scrollbar"
+                                    style={{
+                                        overflowX: 'auto',
+                                        flex: 1,
+                                        //scrollbarWidth: 'thin',
+                                        //scrollbarColor: '#c8dbfb transparent',
+                                    }}
                                 >
-                                    {cleanedData.length > 0 && [...Array(totalPages)].map((_, i) => {
-                                        const page = i + 1;
-                                        return (
-                                            <li
-                                                key={page}
-                                                ref={(el) => (pageRefs.current[i] = el)}
-                                                className={`page-item ${page === currentPage ? 'active' : ''}`}
+                                    <ul
+                                        className="pagination pagination-sm mb-0"
+                                    >
+                                        {cleanedData.length > 0 && [...Array(totalPages)].map((_, i) => {
+                                            const page = i + 1;
+                                            return (
+                                                <li
+                                                    key={page}
+                                                    ref={(el) => (pageRefs.current[i] = el)}
+                                                    className={`page-item ${page === currentPage ? 'active' : ''}`}
 
-                                            >
-                                                <button
-                                                    className="page-link"
-                                                    onClick={() => handlePageChange(page)}
                                                 >
-                                                    {page}
-                                                </button>
-                                            </li>
-                                        );
-                                    })}
-                                </ul>
+                                                    <button
+                                                        className="page-link"
+                                                        onClick={() => handlePageChange(page)}
+                                                    >
+                                                        {page}
+                                                    </button>
+                                                </li>
+                                            );
+                                        })}
+                                    </ul>
+                                </div>
+                                {/* Next */}
+                                <button
+                                    className="btn btn-sm btn-light"
+                                    onClick={() => handlePageChange(currentPage + 1)}
+                                    disabled={currentPage === totalPages}
+                                    title="Next Page"
+                                >
+                                    <i className="bi bi-caret-right-fill"></i>
+                                </button>
+
+                                {/* Last */}
+                                <button
+                                    className="btn btn-sm btn-light"
+                                    onClick={() => handlePageChange(totalPages)}
+                                    disabled={currentPage === totalPages}
+                                    title="Last Page"
+                                >
+                                    <i className="bi bi-skip-end-fill"></i>
+                                </button>
+
+
                             </div>
-                            {/* Next */}
-                            <button
-                                className="btn btn-sm btn-light"
-                                onClick={() => handlePageChange(currentPage + 1)}
-                                disabled={currentPage === totalPages}
-                                title="Next Page"
-                            >
-                                <i className="bi bi-caret-right-fill"></i>
-                            </button>
-
-                            {/* Last */}
-                            <button
-                                className="btn btn-sm btn-light"
-                                onClick={() => handlePageChange(totalPages)}
-                                disabled={currentPage === totalPages}
-                                title="Last Page"
-                            >
-                                <i className="bi bi-skip-end-fill"></i>
-                            </button>
-
-
-                        </div>
-                    </nav>
+                        </nav>
+                    </div>
+                    <div className="col-md-auto align-item-center justify-content-end" style={{ padding: '4px', }}>
+                        {/*<label className="me-1">Rows per page:</label>*/}
+                        <select
+                            value={rowsPerPage}
+                            onChange={(e) => {
+                                setRowsPerPage(Number(e.target.value));
+                                setCurrentPage(1);
+                            }}
+                            className="form-select form-select-sm"
+                            style={{ width: 'auto', display: 'inline-block' }}
+                        >
+                            {pageSizeOptions.map((size) => (
+                                <option key={size} value={size}>{size}</option>
+                            ))}
+                        </select>
+                    </div>
                 </div>
-
             </div>
         </div>
     );
