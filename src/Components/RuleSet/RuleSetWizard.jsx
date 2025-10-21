@@ -76,12 +76,131 @@ const RuleSetWizard = ({
     
 
     const [currentStep, setCurrentStep] = useState(1);
+    const [stepErrors, setStepErrors] = useState('');
 
-    const handleNext = () => {
-        if (currentStep < totalSteps) setCurrentStep(currentStep + 1);
+    const handleResetErrors = () => {
+        setStepErrors(""); // Clear the errors when reset is triggered
     };
 
+    const handleNext = () => {
+        //if (currentStep < totalSteps) setCurrentStep(currentStep + 1);
+
+        const currentStepData = stepData[currentStep];
+
+        let errors = {};
+
+        // Step-specific validation
+        if (currentStep === 1) {
+            errors = validateStep1(currentStepData);
+        } else if (currentStep === 2) {
+            errors = validateStep2(currentStepData);
+        }
+
+        // If there are errors, stop navigation
+        if (Object.keys(errors).length > 0) {
+            setStepErrors(errors);
+        } else {
+            setStepErrors(errors);
+            // Otherwise, move to the next step
+            if (currentStep < totalSteps) {
+                setCurrentStep(currentStep + 1);
+            }
+        }
+    };
+
+    // Step 1 validation
+    const validateStep1 = (data) => {
+        const errors = {};
+
+        if (!data.Name) {
+            errors.Name = "Name is required.";
+        }
+        else {
+            errors.Name = "";
+        }
+
+        if (!data.RuleSetName) {
+            errors.RuleSetName = "RuleSet Name is required.";
+        }
+        else {
+            errors.RuleSetName = "";
+        }
+
+        if (!data.EffectiveDate) {
+            errors.EffectiveDate = "Effective Date is required.";
+        }
+        else {
+            errors.effectiveDate = "";
+        }
+
+        if (!data.TermDate) {
+            errors.TermDate = "Term Date is required.";
+        } else {
+            errors.termDate = "";
+        }
+
+        if (data.EffectiveDate && data.TermDate) {
+            const effectiveDate = new Date(data.EffectiveDate);
+            const termDate = new Date(data.TermDate);
+            if (effectiveDate > termDate) {
+                errors.TermDate = "Term Date must be after Effective Date.";
+            }
+            else {
+                errors.termDate = "";
+            }
+        }
+
+        if (!data.Type) {
+            errors.Type = "Type is required.";
+        }
+        else {
+            errors.Type = "";   
+        }
+
+        if (!data.DrugApprovalLevel) {
+            errors.DrugApprovalLevel = "Drug Approval Level is required.";
+        }
+        else {
+            errors.DrugApprovalLevel = "";
+        }
+
+
+        const errorMsg1 = errors.Name ? (errors.Name) + '<br>' : '';
+        const errorMsg2 = errors.RuleSetName ? (errors.RuleSetName) + '<br>' : '';
+        const errorMsg3 = errors.EffectiveDate ? (errors.EffectiveDate) + '<br>' : '';
+        const errorMsg4 = errors.TermDate ? (errors.TermDate) + '<br>' : '';
+        const errorMsg5 = errors.Type ? (errors.Type) + '<br>' : '';
+        const errorMsg6 = errors.DrugApprovalLevel ? (errors.DrugApprovalLevel) + '<br>' : '';
+
+        const errorMsgAll = errorMsg1 + errorMsg2 + errorMsg3 + errorMsg4 + errorMsg5 + errorMsg6
+
+        return errorMsgAll;
+    };
+
+    // Step 2 validation
+    const validateStep2 = (data) => {
+        const errors = {};
+
+        if (data.includedDrugs.length === 0) {
+            errors.includedDrugs = "At least one drug must be included.";
+        }
+
+        //if (data.excludedDrugs.length === 0) {
+        //    errors.excludedDrugs = "At least one drug must be excluded.";
+        //}
+
+        const errorMsg1 = errors.includedDrugs ? (errors.includedDrugs) + '<br>' : '';
+        //const errorMsg2 = errors.RuleSetName ? (errors.RuleSetName) + '<br>' : '';
+
+        const errorMsgAll = errorMsg1
+
+        return errorMsgAll;
+    };
+
+
     const handlePrev = () => {
+        let errors = {};
+        setStepErrors(errors);
         if (currentStep > 1) setCurrentStep(currentStep - 1);
     };
 
@@ -123,7 +242,7 @@ const RuleSetWizard = ({
     const renderStep = () => {
         switch (currentStep) {
             case 1:
-                return <RulesSetDetails data={stepData[1]} onChange={data => updateStepData(1, data)} />;
+                return <RulesSetDetails data={stepData[1]} onChange={data => updateStepData(1, data)} errors={stepErrors} onResetErrors={handleResetErrors} />;
             case 2:
                 return <DrugList
                     InExdata={{
@@ -131,6 +250,7 @@ const RuleSetWizard = ({
                         excludeGrid: stepData[2].excludedDrugs
                     }}
                     onChange={handleInExdataChange}
+                    errors={stepErrors}
                 />
             case 3:
                 return <Step3 />;
@@ -146,10 +266,31 @@ const RuleSetWizard = ({
     // On Save Draft, collect all data up to current step and call prop
     const handleSaveDraft = () => {
         const dataUpToCurrentStep = {};
-        for (let i = 1; i <= currentStep; i++) {
-            dataUpToCurrentStep[i] = stepData[i];
+        const currentStepData = stepData[currentStep];
+
+        let errors = {};
+
+        // Step-specific validation
+        if (currentStep === 1) {
+            errors = validateStep1(currentStepData);
+        } else if (currentStep === 2) {
+            errors = validateStep2(currentStepData);
         }
-        onSaveDraft(currentStep, dataUpToCurrentStep);
+
+        // If there are errors, stop navigation
+        if (Object.keys(errors).length > 0) {
+            setStepErrors(errors);
+        } else {
+            setStepErrors(errors);
+            // Otherwise, move to the next step
+            for (let i = 1; i <= currentStep; i++) {
+                dataUpToCurrentStep[i] = stepData[i];
+            }
+            onSaveDraft(currentStep, dataUpToCurrentStep);
+        }
+
+
+       
     };
 
     return (

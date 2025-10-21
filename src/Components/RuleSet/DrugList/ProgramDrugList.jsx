@@ -26,7 +26,7 @@ const ProgramDrugList = ({ data, onSelectionChange, AddIncludeList, AddExcludeLi
             <div>
                 <div className="ButtonRow">
                     <button className="PrimaryButton" onClick={AddIncludeList} >Add To Include Drug List</button>
-                    <button className="PrimaryButton" onClick={AddExcludeList}>Add To Exclude Drug List</button>
+                    {/*<button className="PrimaryButton" onClick={AddExcludeList}>Add To Exclude Drug List</button>*/}
                 </div>
             </div>
         </>

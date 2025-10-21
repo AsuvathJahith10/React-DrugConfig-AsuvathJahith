@@ -4,6 +4,7 @@ import DrugListSearch from "./DrugList/DrugListSearch";
 import IncludeExcludeDrugList from "./DrugList/IncludeExcludeDrugList";
 import ProgramDrugList from "./DrugList/ProgramDrugList";
 import config from "../../Config";
+import parse from 'html-react-parser';
 
 const mockData = [
     { drugName: 'Oxycodone', HIC3: 'A2L', HICLSeqNo: '001741', GCN: '70491', GCNSeqNo: '004222', NDC: '33261019152' },
@@ -30,7 +31,7 @@ const mockData = [
     { drugName: 'Acetaminophen', HIC3: 'C4T', HICLSeqNo: '003841', GCN: '90812', GCNSeqNo: '002485', NDC: '12345678901' },
     { drugName: 'Acetaminophen', HIC3: 'C4T', HICLSeqNo: '003841', GCN: '90812', GCNSeqNo: '006725', NDC: '12345678901' },
 ];
-const DrugList = ({ InExdata,  onChange }) => {
+const DrugList = ({ InExdata, onChange, errors }) => {
 
     const InitialColumn = [{
         drugName: '',
@@ -236,13 +237,14 @@ const DrugList = ({ InExdata,  onChange }) => {
 
   return (
       <>
-
+          {errors && typeof errors === 'string' && <div className="ErrorMessage">
+              {parse(errors)}</div>}
           <div className="SectionLabel">Program Drug List</div>
           <label className="SectionSubLabel" style={{ fontSize:'12px' }}>Search for a drug by HICLSeqNo, HICL3, GCN, GCNSeqNo, or NDC. Please make sure the Name matches before adding it to the drug list.</label>
           <DrugListSearch dropdownData={dropdownData} onSearch={handleSearch} />
           <ProgramDrugList data={targetDrugListDataWithHeaders} onSelectionChange={setSelectedRows} AddIncludeList={HandleIncludeList} AddExcludeList={HandleExcludeList} status={DrugSelectStatus} rowKeyField={"GCNSeqNo"} paginationMode={"client"} onPageChange={HandleOnPageChange} totalRecords={totalRecords} />
           <IncludeExcludeDrugList title={"Included Drug List"} data={targetIncludeDataWithHeaders} onDeleteDrug={deleteIncludedDrug} />
-          <IncludeExcludeDrugList title={"Excluded Drug List"} data={targetExcludeDataWithHeaders} onDeleteDrug={deleteExcludedDrug} />
+          {/*<IncludeExcludeDrugList title={"Excluded Drug List"} data={targetExcludeDataWithHeaders} onDeleteDrug={deleteExcludedDrug} />*/}
     </>
   );
 };

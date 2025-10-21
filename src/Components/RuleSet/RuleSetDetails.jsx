@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import "../../App.css";
 import parse from 'html-react-parser';
 
-const RulesSetDetails = ({ data = {}, onChange }) => {
+const RulesSetDetails = ({ data = {}, onChange, errors, onResetErrors }) => {
 
     const defaultFields = {
         Name: "",
@@ -127,12 +127,14 @@ const RulesSetDetails = ({ data = {}, onChange }) => {
         setDrugApprovalLevelError('');
         setErrorMessageDetails('');
         setSuccessMessageInfo('');
+
+        if (onResetErrors) onResetErrors();
     };
 
     return (
         <div>
-            {errorMessageDetails && <div className="ErrorMessage">
-                {parse(errorMessageDetails)}</div>}
+            {errors && typeof errors === 'string' && <div className="ErrorMessage">
+                {parse(errors)}</div>}
             {successMessageInfo && <div className="SuccessMessage">
                 {successMessageInfo}</div>}
 
