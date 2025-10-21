@@ -1,7 +1,7 @@
 import { useState } from "react";
 import GridComponent from "../../GridComponent";
 
-const ProgramDrugList = ({ data, onSelectionChange, AddIncludeList, AddExcludeList, status, rowKeyField }) => {
+const ProgramDrugList = ({ data, onSelectionChange, AddIncludeList, AddExcludeList, status, rowKeyField, paginationMode, onPageChange, totalRecords }) => {
 
     //const filteredData = data.filter(item =>
     //    Object.values(item).some(
@@ -19,6 +19,9 @@ const ProgramDrugList = ({ data, onSelectionChange, AddIncludeList, AddExcludeLi
                 onSelectionChange={onSelectionChange}
                 rowKeyField={rowKeyField}
                 //setSelectedRows={setSelectedRows}
+                paginationMode={paginationMode}
+                onPageChange={onPageChange}
+                totalRecords={totalRecords}
             />
             <div>
                 <div className="ButtonRow">

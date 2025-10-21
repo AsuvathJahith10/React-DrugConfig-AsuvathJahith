@@ -53,6 +53,11 @@ const DrugList = ({ InExdata,  onChange }) => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 
+    // Server-side pagination parameters
+    const [page, setPage] = useState(1);
+    const [rowsPerPage, setRowsPerPage] = useState(10);
+    const [totalRecords, setTotalRecords] = useState(0);
+
     // Fetch data from API
     //useEffect(() => {
     //    //const fetchDrugData = async () => {
@@ -222,6 +227,12 @@ const DrugList = ({ InExdata,  onChange }) => {
     if (loading) return <p>Loading drug list...</p>;
     if (error) return <p style={{ color: 'red' }}>{error}</p>;
 
+    const HandleOnPageChange = (pageNumber, pageSize) => {
+        setPage(pageNumber);
+        setRowsPerPage(pageSize);
+        //fetchData(pageNumber, pageSize);
+    };
+
 
   return (
       <>
@@ -229,7 +240,7 @@ const DrugList = ({ InExdata,  onChange }) => {
           <div className="SectionLabel">Program Drug List</div>
           <label className="SectionSubLabel" style={{ fontSize:'12px' }}>Search for a drug by HICLSeqNo, HICL3, GCN, GCNSeqNo, or NDC. Please make sure the Name matches before adding it to the drug list.</label>
           <DrugListSearch dropdownData={dropdownData} onSearch={handleSearch} />
-          <ProgramDrugList data={targetDrugListDataWithHeaders} onSelectionChange={setSelectedRows} AddIncludeList={HandleIncludeList} AddExcludeList={HandleExcludeList} status={DrugSelectStatus} rowKeyField={"GCNSeqNo"} />
+          <ProgramDrugList data={targetDrugListDataWithHeaders} onSelectionChange={setSelectedRows} AddIncludeList={HandleIncludeList} AddExcludeList={HandleExcludeList} status={DrugSelectStatus} rowKeyField={"GCNSeqNo"} paginationMode={"client"} onPageChange={HandleOnPageChange} totalRecords={totalRecords} />
           <IncludeExcludeDrugList title={"Included Drug List"} data={targetIncludeDataWithHeaders} onDeleteDrug={deleteIncludedDrug} />
           <IncludeExcludeDrugList title={"Excluded Drug List"} data={targetExcludeDataWithHeaders} onDeleteDrug={deleteExcludedDrug} />
     </>

@@ -140,10 +140,11 @@ const columns = ["Name", "EffectiveDate", "TermDate", "LastModified", "Status"];
 
 const Datecolumns = ["EffectiveDate", "TermDate", "LastModified"];
 
-
-
 const RuleSetMaster = () => {
     const [activeComponent, setActiveComponent] = useState('RuleSetSearch');
+
+
+    const [selectedOption, setSelectedOption] = useState("option1");
 
     const loadRuleSetSearch = () => {
         setIsHidden(false)
@@ -162,6 +163,11 @@ const RuleSetMaster = () => {
     const [editRow, setEditRow] = useState(null);
 
     const [isHidden, setIsHidden] = useState(false);
+
+
+    const handleRadioChange = (event) => {
+        setSelectedOption(event.target.value); // Update state when radio button changes
+    };
 
     const handleFieldChange = (field, value) => {
         setSearchFields(prev => ({ ...prev, [field]: value }));
@@ -284,7 +290,8 @@ const RuleSetMaster = () => {
                                     type="radio"
                                     name="myRadioOptions" // Important: Same name for all radios in a group
                                     id="option1"
-                                    value="option1" checked="true"
+                                    value="option1" checked={selectedOption === "option1"} // Controlled
+                                    onChange={handleRadioChange} // Update state on change
                                 />
                                     <label className="form-check-label" htmlFor="option1">
                                         New RuleSet
@@ -295,7 +302,8 @@ const RuleSetMaster = () => {
                                         type="radio"
                                         name="myRadioOptions"
                                         id="option2"
-                                        value="option2"
+                                        value="option2" checked={selectedOption === "option2"}
+                                        onChange={handleRadioChange}
                                     />
                                     <label className="form-check-label" htmlFor="option2">
                                         Use existing RuleSet
