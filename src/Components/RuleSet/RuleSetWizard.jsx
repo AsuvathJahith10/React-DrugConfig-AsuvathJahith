@@ -8,8 +8,8 @@ const StepCircle = ({ isActive, isCompleted, isLast }) => (
                 width: 10,
                 height: 10,
                 borderRadius: "50%",
-                backgroundColor: isActive || isCompleted ? "#0052cc" : "#ccc",
-                border: "1px solid #0052cc",
+                backgroundColor: isActive || isCompleted ? "Navy" : "#ccc",
+                border: "1px solid Navy",
                 zIndex: 1,
             }}
         ></div>
@@ -18,7 +18,7 @@ const StepCircle = ({ isActive, isCompleted, isLast }) => (
                 style={{
                     flex: 1,
                     height: 4,
-                    backgroundColor: isCompleted ? "#0052cc" : "#ccc",
+                    backgroundColor: isCompleted ? "Navy" : "#ccc",
                     margin: "0 4px",
                     zIndex: 0,
                 }}
@@ -27,9 +27,9 @@ const StepCircle = ({ isActive, isCompleted, isLast }) => (
     </>
 );
 
-const NavigationButtons = ({ currentStep, totalSteps, onPrev, onNext, onSaveDraft, onCancel }) => (
-    <div className="row" style={{ display: "flex", justifyContent: "space-between", marginTop: 20, marginBottom: 20 }}>
-        <div className="col-md-4">
+const NavigationButtons = ({ currentStep, totalSteps, onPrev, onNext, onSaveDraft, onCancel, hide=false }) => (
+    <div className="row" style={{ display: "flex", justifyContent: "space-between", marginTop: 11, marginBottom: 10}}>
+        <div className="col-md-auto align-self-center">
             <div className="row">
                 <div className="col-auto">
                     <button className="Button" onClick={onCancel} >
@@ -44,10 +44,11 @@ const NavigationButtons = ({ currentStep, totalSteps, onPrev, onNext, onSaveDraf
                 </div>
             </div>
         </div>
-        <div className="col-md-4 offset-md-4">
+        <div className="col-md-auto align-self-center" style={{ justifyContent: "center", fontSize:12 }}>Step {currentStep} of {totalSteps}</div>
+        <div className="col-md-auto align-self-center">
             <div className="row" style={{ justifyContent: "end" }}>
                 <div className="col-auto">
-                    <button className="Button" onClick={onPrev} disabled={currentStep === 1} >
+                    <button className="Button" onClick={onPrev} disabled={currentStep === 1} style={{visibility: hide ? "hidden" : "visible" }}>
                         Back
                     </button>
                 </div>
@@ -296,7 +297,7 @@ const RuleSetWizard = ({
     return (
         <div className="container" style={{ padding:0 }}> {/*style={{ margin: "40px auto" }}*/}
             {/* Progress bar */}
-            <div className="row " style={{ justifyContent: "end" }}>
+            <div className="row " style={{ justifyContent: "end", position: "relative", zIndex: 10, marginTop:-31}}>
                 <div className="col-auto">
 
                     <div 
@@ -324,13 +325,15 @@ const RuleSetWizard = ({
             </div>
 
             {/* Navigation buttons */}
-            {/*<NavigationButtons*/}
-            {/*    currentStep={currentStep}*/}
-            {/*    totalSteps={totalSteps}*/}
-            {/*    onPrev={handlePrev}*/}
-            {/*    onNext={handleNext}*/}
-            {/*/>*/}
-
+            <NavigationButtons
+                currentStep={currentStep}
+                totalSteps={totalSteps}
+                onSaveDraft={handleSaveDraft}
+                onCancel={onCancel}
+                onPrev={handlePrev}
+                onNext={handleNext}
+                hide={true}
+            />
             {/* Step content */}
             <div
                 style={{
@@ -338,7 +341,7 @@ const RuleSetWizard = ({
                     padding: 20,
                     borderRadius: 4,
                     minHeight: 120,
-                    fontSize: 16,
+                    fontSize: 16
                 }}
             >
                 {renderStep()}

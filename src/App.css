@@ -631,7 +631,7 @@ width: 98%;
 h1, .H1 {
     font: 24px "Trebuchet MS", "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Tahoma, sans-serif;
     font-weight: normal;
-    margin: 1px 0 0 1px;
+    /*margin: 1px 0 0 1px;*/
     padding: 0 0 0 0;
     text-align: left;
 }

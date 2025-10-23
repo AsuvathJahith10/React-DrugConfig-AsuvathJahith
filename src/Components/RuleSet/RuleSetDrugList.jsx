@@ -31,7 +31,7 @@ const mockData = [
     { drugName: 'Acetaminophen', HIC3: 'C4T', HICLSeqNo: '003841', GCN: '90812', GCNSeqNo: '002485', NDC: '12345678901' },
     { drugName: 'Acetaminophen', HIC3: 'C4T', HICLSeqNo: '003841', GCN: '90812', GCNSeqNo: '006725', NDC: '12345678901' },
 ];
-const DrugList = ({ InExdata, onChange, errors }) => {
+const DrugList = ({ InExdata, onChange, errors, onResetErrors }) => {
 
     const InitialColumn = [{
         drugName: '',
@@ -235,6 +235,30 @@ const DrugList = ({ InExdata, onChange, errors }) => {
     };
 
 
+    const handleReset = () => {
+        // 1️⃣ Reset local states
+        setIncludedDrugs([]);
+        setExcludedDrugs([]);
+        setDrugList(mockData);
+        setSelectedRows([]);
+        setDrugSelectStatus(false);
+        setPage(1);
+        setRowsPerPage(10);
+        setError(null);
+
+        // 2️⃣ Update parent state (so Wizard stays in sync)
+        if (onChange) {
+            onChange({
+                includeGrid: [],
+                excludeGrid: []
+            });
+        }
+
+        // 3️⃣ Clear errors in parent
+        if (onResetErrors) onResetErrors();
+    };
+
+
   return (
       <>
           {errors && typeof errors === 'string' && <div className="ErrorMessage">
@@ -245,6 +269,9 @@ const DrugList = ({ InExdata, onChange, errors }) => {
           <ProgramDrugList data={targetDrugListDataWithHeaders} onSelectionChange={setSelectedRows} AddIncludeList={HandleIncludeList} AddExcludeList={HandleExcludeList} status={DrugSelectStatus} rowKeyField={"GCNSeqNo"} paginationMode={"client"} onPageChange={HandleOnPageChange} totalRecords={totalRecords} />
           <IncludeExcludeDrugList title={"Included Drug List"} data={targetIncludeDataWithHeaders} onDeleteDrug={deleteIncludedDrug} />
           {/*<IncludeExcludeDrugList title={"Excluded Drug List"} data={targetExcludeDataWithHeaders} onDeleteDrug={deleteExcludedDrug} />*/}
+          <div className="ButtonRow">
+              <button className="Button" onClick={handleReset}>Reset</button>
+          </div>
     </>
   );
 };

@@ -163,6 +163,10 @@ const RuleSetMaster = () => {
     const [editRow, setEditRow] = useState(null);
 
     const [isHidden, setIsHidden] = useState(false);
+    // Server-side pagination parameters
+    const [page, setPage] = useState(1);
+    const [rowsPerPage, setRowsPerPage] = useState(10);
+    const [totalRecords, setTotalRecords] = useState(0);
 
 
     const handleRadioChange = (event) => {
@@ -248,17 +252,24 @@ const RuleSetMaster = () => {
             if(res.ok) alert("Draft saved successfully!");
         });
         */
-};
+    };
+
+
+    const HandleOnPageChange = (pageNumber, pageSize) => {
+        setPage(pageNumber);
+        setRowsPerPage(pageSize);
+        //fetchData(pageNumber, pageSize);
+    };
 
 
     return (
         <div>
-            <div className="row mt-2">
-                <div className="col-auto me-auto mt-2">
+            <div className="row mt-3 justify-content-between">
+                <div className="col-auto align-self-center">
                     <div className="H1">{title}</div>
                 </div>
-                <div className="col-auto d-flex align-items-center">
-                    <button className="PrimaryButton" style={{ display: isHidden ? 'none' : 'block' }} data-bs-toggle="modal" data-bs-target="#exampleModal">New RuleSet</button>
+                <div className="col-auto align-self-center">
+                    <button className="PrimaryButton" style={{ display: isHidden ? 'none' : 'block',marginRight:0 }} data-bs-toggle="modal" data-bs-target="#exampleModal">New RuleSet</button>
                 </div>
             </div>
 
@@ -336,7 +347,7 @@ const RuleSetMaster = () => {
                 }
                 {activeComponent === 'RuleSetSearch' && filteredData && filteredData.length > 0 ? (
                    /* <GridComponent title={selectedStatus} Orgdata={cleanedData} />*/
-                    <GridComponent title={selectedStatus + " RuleSets"} Orgdata={cleanedData} columnAlignments={columnAlignments} columnDisplayNames={columnDisplayNames} columnWidths={columnWidths} showEditButtonColumn={true} Datecolumns={Datecolumns} onEditRow={handleEditRow} />
+                    <GridComponent title={selectedStatus + " RuleSets"} Orgdata={cleanedData} columnAlignments={columnAlignments} columnDisplayNames={columnDisplayNames} columnWidths={columnWidths} showEditButtonColumn={true} Datecolumns={Datecolumns} onEditRow={handleEditRow} paginationMode={"client"} onPageChange={HandleOnPageChange} totalRecords={totalRecords} />
                 ) : activeComponent === 'RuleSetSearch' ? (
                     <p>No Data found</p>
                 ) : (<p></p>)}
