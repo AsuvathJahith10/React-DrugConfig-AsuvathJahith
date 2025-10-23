@@ -38,84 +38,6 @@ const RulesSetDetails = ({ data = {}, onChange, errors, onResetErrors }) => {
         setRuleSetFields(prev => ({ ...defaultFields, ...data }));
     }, [data]);
 
-    const handleSaveDraft = (event) => {
-        event.preventDefault();
-        setErrorMessageDetails('');
-        setSuccessMessageInfo('');
-
-        if (!ruleSetFields.Name) {
-            setNameError('Name is required.');
-        }
-        else {
-            setNameError('');
-        }
-
-        if (!ruleSetFields.RuleSetName) {
-            setRuleSetNameError('RuleSet Name is required.');
-        }
-        else {
-            setRuleSetNameError('');
-        }
-
-
-        if (!ruleSetFields.EffectiveDate) {
-            setEffectiveDateError('Effective Date is required.');
-        } else {
-            setEffectiveDateError('');
-        }
-
-
-        if (!ruleSetFields.TermDate) {
-            setTermDateError('Term Date is required.');
-        } else {
-            setTermDateError('');
-        }
-
-
-        if (ruleSetFields.EffectiveDate && ruleSetFields.TermDate) {
-            const effectiveDate = new Date(ruleSetFields.EffectiveDate);
-            const termDate = new Date(ruleSetFields.TermDate);
-            if (effectiveDate > termDate) {
-                setTermDateError('Term Date must exceed Effective Date.');
-            }
-            else {
-                setTermDateError('');
-            }
-        }
-
-        if (!ruleSetFields.Type) {
-            setTypeError('Type is required.');
-        }
-        else {
-            setTypeError('');
-        }
-
-        if (!ruleSetFields.DrugApprovalLevel) {
-            setDrugApprovalLevelError('Drug Approval Level is required.');
-        }
-        else {
-            setDrugApprovalLevelError('');
-        }
-
-
-
-        const errorMsg1 = nameError ? (nameError) + '<br>' : '';
-        const errorMsg2 = ruleSetNameError ? (ruleSetNameError) + '<br>' : '';
-        const errorMsg3 = effectiveDateError ? (effectiveDateError) + '<br>' : '';
-        const errorMsg4 = termDateError ? (termDateError) + '<br>' : '';
-        const errorMsg5 = typeError ? (typeError) + '<br>' : '';
-        const errorMsg6 = drugApprovalLevelError ? (drugApprovalLevelError) + '<br>' : '';
-
-        const errorMsgAll = errorMsg1 + errorMsg2 + errorMsg3 + errorMsg4 + errorMsg5 + errorMsg6
-
-        setErrorMessageDetails(errorMsgAll);
-
-        //if (errorMsgAll === '')
-        //    setSuccessMessageInfo('New RuleSet Configuration saved successfully!');
-        //else
-        //    setSuccessMessageInfo('');
-    }
-
 
     const handleReset = () => {
         setRuleSetFields(defaultFields);
@@ -127,7 +49,7 @@ const RulesSetDetails = ({ data = {}, onChange, errors, onResetErrors }) => {
         setDrugApprovalLevelError('');
         setErrorMessageDetails('');
         setSuccessMessageInfo('');
-
+        if (onChange) onChange(defaultFields);
         if (onResetErrors) onResetErrors();
     };
 

@@ -673,7 +673,7 @@ h1, .H1 {
     display: inline-block;
     text-align: left;
     margin: .1px;
-    background: transparent url(./Images/X_Button.png) scroll no-repeat left top;
+    background: transparent url(/public/Images/X_Button.png) scroll no-repeat left top;
     padding: 0px 0px 0px 20px;
 }
 
