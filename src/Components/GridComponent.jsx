@@ -36,11 +36,11 @@ const GridComponent = ({ Orgdata = {}, title = "Active", columnAlignments = {}, 
         ));
 
         if (Orgdata && Orgdata.length > 0) {
-            console.log("Setting cleaned data from Orgdata:", Orgdata);
+            //console.log("Setting cleaned data from Orgdata:", Orgdata);
             setData(Orgdata);
             setCurrentPage(1);
 
-            console.log("Orgdata changed:", data);
+            //console.log("Orgdata changed:", data);
             const initialFilters = Object.keys(Orgdata[0]).reduce((acc, key) => {
                 acc[key] = '';
                 return acc;
@@ -76,7 +76,7 @@ const GridComponent = ({ Orgdata = {}, title = "Active", columnAlignments = {}, 
             aValue = Date.parse(aValue);
             bValue = Date.parse(bValue);
 
-            console.log("Sorting:", sortConfig.key, aValue, bValue);
+            //console.log("Sorting:", sortConfig.key, aValue, bValue);
         }
 
         if (aValue < bValue) return sortConfig.direction === "asc" ? -1 : 1;

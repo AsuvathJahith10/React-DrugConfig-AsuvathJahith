@@ -80,7 +80,7 @@ const DrugList = ({ InExdata, onChange, errors, onResetErrors }) => {
     //}, []);
 
     useEffect(() => {
-        console.log('InExdata:', InExdata);
+        //console.log('InExdata:', InExdata);
         if (InExdata) {
             setIncludedDrugs(InExdata.includeGrid || []);
             setExcludedDrugs(InExdata.excludeGrid || []);
@@ -123,7 +123,7 @@ const DrugList = ({ InExdata, onChange, errors, onResetErrors }) => {
 
             const result = await response.json();
             setDrugList(result);
-            console.log('API Response:', result);
+            //console.log('API Response:', result);
 
             // Do something with the result (e.g., update state or show in UI)
         } catch (error) {

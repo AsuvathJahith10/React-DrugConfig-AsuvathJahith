@@ -295,20 +295,12 @@ const RuleSetWizard = ({
     };
 
     return (
-        <div className="container" style={{ padding:0 }}> {/*style={{ margin: "40px auto" }}*/}
+        <div className="RuleSetWizard container" style={{ padding:0 }}> {/*style={{ margin: "40px auto" }}*/}
             {/* Progress bar */}
             <div className="row " style={{ justifyContent: "end", position: "relative", zIndex: 10, marginTop:-31}}>
-                <div className="col-auto">
+                <div className="col-auto StepProgress">
 
-                    <div 
-                        style={{
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "space-between",
-                            marginBottom: 10,
-                            width: '250px'
-                        }}
-                    >
+                    <div className="StepProgressBar">
                         {Array.from({ length: totalSteps }).map((_, i) => {
                             const stepNum = i + 1;
                             return (
@@ -325,6 +317,7 @@ const RuleSetWizard = ({
             </div>
 
             {/* Navigation buttons */}
+            <div className="NavigationButtons">
             <NavigationButtons
                 currentStep={currentStep}
                 totalSteps={totalSteps}
@@ -333,7 +326,8 @@ const RuleSetWizard = ({
                 onPrev={handlePrev}
                 onNext={handleNext}
                 hide={true}
-            />
+                />
+            </div>
             {/* Step content */}
             <div
                 style={{
@@ -348,6 +342,8 @@ const RuleSetWizard = ({
             </div>
 
             {/* Navigation buttons */}
+
+            <div className="NavigationButtons">
             <NavigationButtons
                 currentStep={currentStep}
                 totalSteps={totalSteps}
@@ -355,7 +351,8 @@ const RuleSetWizard = ({
                 onCancel={onCancel}
                 onPrev={handlePrev}
                 onNext={handleNext}
-            />
+                />
+            </div>
         </div>
     );
 };
